@@ -1,6 +1,7 @@
 <template>
-  <div class="header">
+  <div class="EducationGraph">
     <h1>{{ msg }}</h1>
+    <p>Will insert graph here</p>
   </div>
 </template>
 
@@ -9,7 +10,7 @@ export default {
   name: 'header',
   data() {
     return {
-      msg: 'Here I will put a header file.',
+      msg: '',
     };
   },
 };
