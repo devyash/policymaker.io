@@ -1,7 +1,7 @@
 <template>
   <div class="EducationGraph">
     <h1>{{ msg }}</h1>
-    <p>Will insert graph here</p>
+    <p>Loading graph here. Refresh if problem persists</p>
   </div>
 </template>
 
