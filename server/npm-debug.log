@@ -1,23 +1,56 @@
 0 info it worked if it ends with ok
-1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'run', 'index.js' ]
+1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'install', 'index.js' ]
 2 info using npm@3.5.2
 3 info using node@v4.2.6
-4 verbose stack Error: missing script: index.js
-4 verbose stack     at run (/usr/share/npm/lib/run-script.js:147:19)
-4 verbose stack     at /usr/share/npm/lib/run-script.js:57:5
-4 verbose stack     at /usr/share/npm/node_modules/read-package-json/read-json.js:345:5
-4 verbose stack     at checkBinReferences_ (/usr/share/npm/node_modules/read-package-json/read-json.js:309:45)
-4 verbose stack     at final (/usr/share/npm/node_modules/read-package-json/read-json.js:343:3)
-4 verbose stack     at then (/usr/share/npm/node_modules/read-package-json/read-json.js:113:5)
-4 verbose stack     at ReadFileContext.<anonymous> (/usr/share/npm/node_modules/read-package-json/read-json.js:284:20)
-4 verbose stack     at ReadFileContext.callback (/usr/share/npm/node_modules/graceful-fs/graceful-fs.js:76:16)
-4 verbose stack     at FSReqWrap.readFileAfterOpen [as oncomplete] (fs.js:303:13)
-5 verbose cwd /home/devyash/Desktop/policymaker.io/server
-6 error Linux 4.8.0-41-generic
-7 error argv "/usr/bin/nodejs" "/usr/bin/npm" "run" "index.js"
-8 error node v4.2.6
-9 error npm  v3.5.2
-10 error missing script: index.js
-11 error If you need help, you may report this error at:
-11 error     <https://github.com/npm/npm/issues>
-12 verbose exit [ 1, true ]
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly fetchPackageMetaData index.js
+8 silly fetchOtherPackageData index.js
+9 silly cache add args [ 'index.js', null ]
+10 verbose cache add spec index.js
+11 silly cache add parsed spec Result {
+11 silly cache add   raw: 'index.js',
+11 silly cache add   scope: null,
+11 silly cache add   name: null,
+11 silly cache add   rawSpec: 'index.js',
+11 silly cache add   spec: '/home/devyash/Desktop/policymaker.io/server/index.js',
+11 silly cache add   type: 'local' }
+12 silly addLocalTarball shasum (computed) 7aca39c9c7e27c207ad5892f3961286df9e34362
+13 verbose addTmpTarball /home/devyash/Desktop/policymaker.io/server/index.js not in flight; adding
+14 verbose addTmpTarball validating metadata from /home/devyash/Desktop/policymaker.io/server/index.js
+15 verbose tar unpack /home/devyash/Desktop/policymaker.io/server/index.js
+16 verbose tar unpacking to /tmp/npm-20228-6ebd272a/unpack-bb9416fd
+17 silly gentlyRm /tmp/npm-20228-6ebd272a/unpack-bb9416fd is being purged
+18 verbose gentlyRm don't care about contents; nuking /tmp/npm-20228-6ebd272a/unpack-bb9416fd
+19 silly gunzTarPerm modes [ '755', '644' ]
+20 error not a package /home/devyash/Desktop/policymaker.io/server/index.js
+21 error addLocal Could not install /home/devyash/Desktop/policymaker.io/server/index.js
+22 silly fetchPackageMetaData Error: ENOENT: no such file or directory, open '/tmp/npm-20228-6ebd272a/unpack-bb9416fd/package.json'
+22 silly fetchPackageMetaData     at Error (native)
+22 silly fetchPackageMetaData  error for index.js { [Error: ENOENT: no such file or directory, open '/tmp/npm-20228-6ebd272a/unpack-bb9416fd/package.json']
+22 silly fetchPackageMetaData   errno: -2,
+22 silly fetchPackageMetaData   code: 'ENOENT',
+22 silly fetchPackageMetaData   syscall: 'open',
+22 silly fetchPackageMetaData   path: '/tmp/npm-20228-6ebd272a/unpack-bb9416fd/package.json' }
+23 silly rollbackFailedOptional Starting
+24 silly rollbackFailedOptional Finishing
+25 silly runTopLevelLifecycles Starting
+26 silly runTopLevelLifecycles Finishing
+27 silly install printInstalled
+28 verbose stack Error: ENOENT: no such file or directory, open '/tmp/npm-20228-6ebd272a/unpack-bb9416fd/package.json'
+28 verbose stack     at Error (native)
+29 verbose cwd /home/devyash/Desktop/policymaker.io/server
+30 error Linux 4.8.0-45-generic
+31 error argv "/usr/bin/nodejs" "/usr/bin/npm" "install" "index.js"
+32 error node v4.2.6
+33 error npm  v3.5.2
+34 error path /tmp/npm-20228-6ebd272a/unpack-bb9416fd/package.json
+35 error code ENOENT
+36 error errno -2
+37 error syscall open
+38 error enoent ENOENT: no such file or directory, open '/tmp/npm-20228-6ebd272a/unpack-bb9416fd/package.json'
+39 error enoent ENOENT: no such file or directory, open '/tmp/npm-20228-6ebd272a/unpack-bb9416fd/package.json'
+39 error enoent This is most likely not a problem with npm itself
+39 error enoent and is related to npm not being able to find a file.
+40 verbose exit [ -2, true ]

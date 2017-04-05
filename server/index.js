@@ -3,47 +3,44 @@ var restify = require('restify');
 
 // Get Oracle Connection and add it to the server req obj(only 1 user)
 
-// //load the oracledb library
-// var oracledb = require('oracledb');
+//load the oracledb library
+var oracledb = require('oracledb');
 
-// //load the simple oracledb
-// var SimpleOracleDB = require('simple-oracledb');
+//load the simple oracledb
+var SimpleOracleDB = require('simple-oracledb');
 
-// //modify the original oracledb library
-// SimpleOracleDB.extend(oracledb);
+//modify the original oracledb library
+SimpleOracleDB.extend(oracledb);
 
-// //from this point connections fetched via oracledb.getConnection(...) or pool.getConnection(...)
-// //have access to additional functionality.
-// var oracledb = require('oracledb');
+//from this point connections fetched via oracledb.getConnection(...) or pool.getConnection(...)
+//have access to additional functionality.
+var oracledb = require('oracledb');
 
-// oracledb.getConnection(
-//   {
-//     user          : "hr",
-//     password      : "welcome",
-//     connectString : "localhost/XE",
-//     Hostname: "oracle.cise.ufl.edu",
-// 	Port: 1521,
-// 	SID: orcl
-//   })
-//   .then(function(conn) {
-//     return conn.execute(
-//       "SELECT department_id, department_name " +
-//         "FROM departments " +
-//         "WHERE manager_id < :id",
-//       [110]  // bind value for :id
-//     )
-//       .then(function(result) {
-//         console.log(result.rows);
-//         return conn.close();
-//       })
-//       .catch(function(err) {
-//         console.error(err);
-//         return conn.close();
-//       });
-//   })
-//   .catch(function(err) {
-//     console.error(err);
-//   });
+oracledb.getConnection(
+  {
+    user          : "hv0",
+    password      : "Spide123!",
+    connectString : "oracle.cise.ufl.edu:1521/orcl",
+  })
+  .then(function(conn) {
+    return conn.execute(
+      "SELECT department_id, department_name " +
+        "FROM departments " +
+        "WHERE manager_id < :id",
+      [110]  // bind value for :id
+    )
+      .then(function(result) {
+        console.log(result.rows);
+        return conn.close();
+      })
+      .catch(function(err) {
+        console.error(err);
+        return conn.close();
+      });
+  })
+  .catch(function(err) {
+    console.error(err);
+  });
 
 
 
