@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/devyash/policymaker.io#readme",
   "dependencies": {
+    "bluebird": "^3.5.0",
     "restify": "^4.3.0",
     "simple-oracledb": "^1.1.60"
   }
