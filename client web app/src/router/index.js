@@ -4,6 +4,7 @@ import Hello from '@/components/Hello';
 import EducationGraph from '@/components/EducationGraph';
 import Map from '@/components/map';
 import newpolicyform from '@/components/newpolicyform';
+import simplequeryemployment from '@/components/simplequeryemployment';
 
 Vue.use(Router);
 
@@ -30,6 +31,11 @@ export default new Router({
       path: '/policy/new',
       name: 'newpolicyform',
       component: newpolicyform,
+    },
+    {
+      path: '/employment/simple',
+      name: 'simplequeryemployment',
+      component: simplequeryemployment,
     }
   ],
 });
