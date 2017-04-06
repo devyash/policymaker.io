@@ -2,31 +2,7 @@
 'use strict';
 let restify, routes, server;
 restify = require('restify');
-// var Promise = require("bluebird"); //favourite promise library
 
-// //load the oracledb library
-// var oracledb = require('oracledb');
-
-// //load the simple oracledb
-// var SimpleOracleDB = require('simple-oracledb');
-
-// //modify the original oracledb library
-// SimpleOracleDB.extend(oracledb);
-
-// //from this point connections fetched via oracledb.getConnection(...) or pool.getConnection(...)
-// //have access to additional functionality.
-// var oracledb = require('oracledb');
-// oracledb.Promise = Promise;//setting promise library tobluebird
-
-// // Get Oracle Connection only 1 connection 
-// var connection = oracledb.getConnection(
-//   {
-//     // user          : "hv0",
-//     // password      : "Spide123!",
-//     user          : "harika",
-//     password      : "Oracleme893!",
-//     connectString : "oracle.cise.ufl.edu:1521/orcl",
-//   });
 routes = require('./routes/');
 server = restify.createServer({
     name: 'policymaker-api',
@@ -55,29 +31,6 @@ server.use(restify.bodyParser({ mapParams: false }));
 server.use(restify.queryParser());
 server.use(restify.gzipResponse());
 server.pre(restify.pre.sanitizePath());
-
-
-// function respond(req, res, next) {
-//   if (req.params.year) {
-//     console.log(req.params.year);
-//   }
-//     connection.then(function(conn) {
-//       return conn.execute("SELECT * FROM poverty where rownum = 1")
-//         .then(function(result) {
-//           res.send(result.rows);
-//           //console.log(result.rows);
-//           // return conn.close();
-//         })
-
-//     })
-//     .catch(function(err) {
-//       console.error(err);
-//     });
-
-//  }
-
-// server.get('/poverty', respond);
-
 
 
 routes(server);
