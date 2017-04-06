@@ -7,6 +7,9 @@ SimpleOracleDB = require('simple-oracledb');
 SimpleOracleDB.extend(oracledb);
 oracledb.Promise = Promise;//setting promise library tobluebird
 oracledb.outFormat = oracledb.OBJECT;
+oracledb.maxRows = 500;
+
+
 // Get Oracle Connection only 1 connection 
 var connection = oracledb.getConnection(
   {
