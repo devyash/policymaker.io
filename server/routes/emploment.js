@@ -19,9 +19,9 @@ var connection = oracledb.getConnection(
 
 function respond(req, res, next) {
 
-  if (req.params.type == "simple") {
+  if (req.params.type === "simple") {
     
-    if (req.params.selectrange == "top")  {
+    if (req.params.selectrange === "top")  {
     
       connection.then(function(conn) {
       return conn.execute("select * from (select state,sum(" + req.params.criteria + ") as total from employment group by state order by total desc) where ROWNUM<="+ req.params.N+";")
