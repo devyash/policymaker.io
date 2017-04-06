@@ -18,22 +18,42 @@ var connection = oracledb.getConnection(
   });
 
 function respond(req, res, next) {
-  if (req.params.year) {
-    console.log(req.params.year);
-  }
-    connection.then(function(conn) {
-      return conn.execute("SELECT * FROM employment")
+
+  if (req.params.type == "simple") {
+    
+    if (req.params.selectrange == "top")  {
+    
+      connection.then(function(conn) {
+      return conn.execute("select * from (select state,sum(" + req.params.criteria + ") as total from employment group by state order by total desc) where ROWNUM<="+ req.params.N+";")
         .then(function(result) {
           let output=result.rows;
           res.send(output);
-          //console.log(result.rows);
-          //return conn.close();
         })
 
     })
     .catch(function(err) {
       console.error(err);
     });
+
+    }
+
+    else {
+
+      connection.then(function(conn) {
+      return conn.execute("select * from (select state,sum(" + req.params.criteria + ") as total from employment group by state order by total) where ROWNUM<="+ req.params.N+";")
+        .then(function(result) {
+          let output=result.rows;
+          res.send(output);
+        })
+
+    })
+    .catch(function(err) {
+      console.error(err);
+    });
+
+    }
+    
+  }
 
  }
 

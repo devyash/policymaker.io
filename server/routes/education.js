@@ -10,8 +10,6 @@ oracledb.outFormat = oracledb.OBJECT;
 // Get Oracle Connection only 1 connection 
 var connection = oracledb.getConnection(
   {
-    // user          : "hv0",
-    // password      : "Spide123!",
     user          : "harika",
     password      : "Oracleme893!",
     connectString : "oracle.cise.ufl.edu:1521/orcl",
