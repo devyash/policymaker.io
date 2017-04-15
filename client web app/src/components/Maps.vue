@@ -1,12 +1,12 @@
 <template>
-<div id='chartdiv'><p>The Map is loading here</p></div>   
+<div class="Maps">
 
-
+<div id="chartdiv"></div>
+</div>
 </template>
 
-<script>
-//maps.dataProvider.areas[0].value
-const maps={
+<script >
+const optionsdata={
   type: 'map',
   theme: 'light',
   colorSteps: 10,
@@ -179,26 +179,24 @@ const maps={
     enabled: true,
   },
 };
-console.log(maps);
-const ammap3 = require('../../node_modules/ammap3');
-AmCharts.makeChart('chartdiv', maps);
-export default {
-  name: 'header',
-  data() {
-    return {
-      maps,
-      msg: 'This',
-    };
-  },
-};
+
+var map = AmCharts.makeChart( "chartdiv", optionsdata);
+
+export default{
+	data(){
+		return{
+			optionsdata,
+		}
+	}
+}
+	
 </script>
 
-<!-- Add 'scoped' attribute to limit CSS to this component only -->
-<style scoped>
 
-  #chartdiv {
+<style >
+#chartdiv {
   width: 100%;
   height: 500px;
 }
-
+	
 </style>

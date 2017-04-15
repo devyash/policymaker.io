@@ -2,14 +2,15 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Hello from '@/components/Hello';
 import EducationGraph from '@/components/EducationGraph';
-import Map from '@/components/map';
 import newpolicyform from '@/components/newpolicyform';
 import simplequeryemployment from '@/components/simplequeryemployment';
+import Maps from '@/components/Maps';
 
 import ActivityGraph from '@/components/ActivityGraph';
 
 
 Vue.component('activity-graph', ActivityGraph)
+
 
 Vue.use(Router);
 
@@ -27,12 +28,6 @@ export default new Router({
       component: EducationGraph,
     },
     {
-      path: '/map',
-      name: 'map',
-      component: Map,
-    }
-    ,
-    {
       path: '/policy/new',
       name: 'newpolicyform',
       component: newpolicyform,
@@ -41,6 +36,11 @@ export default new Router({
       path: '/employment/simple',
       name: 'simplequeryemployment',
       component: simplequeryemployment,
+    },
+    {
+      path: '/maps',
+      name: 'Maps',
+      component: Maps,
     }
   ],
 });

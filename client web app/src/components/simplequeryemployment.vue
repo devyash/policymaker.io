@@ -132,6 +132,7 @@
   </template>
 
   <script>
+ 
     export default {
       name: 'header',
       data() {
@@ -153,7 +154,6 @@
           ],
           someData: "",
           displayResult: false
-
         };
       },
       computed:{
