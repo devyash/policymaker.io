@@ -124,13 +124,14 @@
             <!-- /input-group -->
           </li>
           <li>
-            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+               <router-link to="/"><i class="fa fa-dashboard fa-fw"></i> Dashboard</router-link>
+
           </li>
           <li>
             <a href="forms.html"><i class="fa fa-edit fa-fw"></i>Enter new Surey Data</a>
           </li>
           <li>
-            <a href="/policy/new/"><i class="fa fa-edit fa-fw"></i>Enter new Policy</a>
+            <router-link to="/policy/new/"><i class="fa fa-edit fa-fw"></i>Enter new Policy</router-link>
           </li>
 
           <li>

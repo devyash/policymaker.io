@@ -9,10 +9,11 @@
 <script>
 import BarChart from './BarChart'
 export default {
+  props:['labels','row'],
   data: function(){
     return {
-      labels: ['LOLOL', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-       row: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11]
+      locallabels: this.labels,
+      localrow: this.row 
     }
   },
   components:{

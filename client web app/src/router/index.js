@@ -5,7 +5,6 @@ import EducationGraph from '@/components/EducationGraph';
 import Map from '@/components/map';
 import newpolicyform from '@/components/newpolicyform';
 import simplequeryemployment from '@/components/simplequeryemployment';
-import chartjs from '@/components/chartjs';
 
 import ActivityGraph from '@/components/ActivityGraph';
 
@@ -42,11 +41,6 @@ export default new Router({
       path: '/employment/simple',
       name: 'simplequeryemployment',
       component: simplequeryemployment,
-    },
-    {
-      path: '/chartjs',
-      name: 'chartjs',
-      component: chartjs,
     }
   ],
 });

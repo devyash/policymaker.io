@@ -92,8 +92,7 @@
               <h4 style="text-align:left"> Graphs</h4>
             </div>
             <div class="panel-body">
-            <p>This is a graph body</p>
-              <activity-graph></activity-graph>
+              <activity-graph :labels=labels :row=row></activity-graph>
             </div>
           </div>
         </div>
@@ -113,10 +112,10 @@
 
         <!-- ---------------------------------------------------------------->
 
+<!-- 
 
 
-
-        <pre>{{ $data }}</pre>
+        <pre>{{ $data }}</pre> -->
       </div>
     </div>
 
@@ -141,6 +140,8 @@
           N:'',
           year: '',
           criteria: '',
+          labels: ['LOLOL', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+          row: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
           gridColumns: ['attribute','value'],
           gridData: [
           { attribute: 'Rajesh', value: 9000 },
