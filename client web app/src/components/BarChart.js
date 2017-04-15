@@ -2,11 +2,12 @@
 import { Bar } from 'vue-chartjs'
 
 export default Bar.extend({
-  props: ['labels','row'],
+  props: ['labels','row','name'],
   data: function (){
     return {
-      locallabels:this.labels,
-      localrow:this.row
+      localname: this.name,
+      locallabels: this.labels,
+      localrow: this.row
       }
     },
     mounted () {
@@ -15,7 +16,7 @@ export default Bar.extend({
       labels: this.locallabels,
       datasets: [
       {
-        label: 'GitHub Commits',
+        label: this.localname.toString(),
         backgroundColor: '#f87979',
         data: this.localrow
       }

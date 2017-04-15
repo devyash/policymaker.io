@@ -1,7 +1,7 @@
 <template>
   <div class="ActivityGraph">
     <div>
-<bar-chart :labels=labels :row=row>Yo</bar-chart>
+<bar-chart :labels=locallabels :row=localrow :name=localname>Yo</bar-chart>
   </div>
   </div>
 </template>
@@ -9,11 +9,12 @@
 <script>
 import BarChart from './BarChart'
 export default {
-  props:['labels','row'],
+  props:['labels','row','name'],
   data: function(){
     return {
       locallabels: this.labels,
-      localrow: this.row 
+      localrow: this.row,
+      localname: this.name, 
     }
   },
   components:{

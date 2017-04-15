@@ -92,7 +92,8 @@
               <h4 style="text-align:left"> Graphs</h4>
             </div>
             <div class="panel-body">
-              <activity-graph :labels=labels :row=row></activity-graph>
+            <p>This is a graph body</p>
+              <activity-graph :labels=labels :row=row :name=name></activity-graph>
             </div>
           </div>
         </div>
@@ -142,6 +143,7 @@
           criteria: '',
           labels: ['LOLOL', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
           row: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
+          // name: "Results",
           gridColumns: ['attribute','value'],
           gridData: [
           { attribute: 'Rajesh', value: 9000 },
@@ -153,6 +155,14 @@
           displayResult: false
 
         };
+      },
+      computed:{
+        name: function(){
+          if(!this.selectrange || !this.N)
+            return "Result"
+          else
+            return this.selectrange +" "+this.N;
+        }
       },
       methods: {
         submitQuery: function () {
