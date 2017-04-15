@@ -21,13 +21,13 @@
                                 </div>
                             </div>
                         </div>
-                        <router-link to="/employment/simple">
+                      <a href="#">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                 <div class="clearfix"></div>
                             </div>
-                        </router-link>
+                            </a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -42,13 +42,13 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                          <router-link to="/employment/simple">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                 <div class="clearfix"></div>
                             </div>
-                        </a>
+                        </router-link>  
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
