@@ -4,9 +4,7 @@
 
 
     <div class="container-fluid">
-      <div class="jumbotron">
-        <h1>Employment: Simple Query</h1>
-      </div>
+      <h1 class="page-header">Employment: Simple Query</h1>
       <div class="row">
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -94,7 +92,8 @@
               <h4 style="text-align:left"> Graphs</h4>
             </div>
             <div class="panel-body">
-              <p>This is the body</p>
+            <p>This is a graph body</p>
+              <activity-graph></activity-graph>
             </div>
           </div>
         </div>
@@ -117,7 +116,7 @@
 
 
 
-        <pre>{{ $data | json }}</pre>
+        <pre>{{ $data }}</pre>
       </div>
     </div>
 

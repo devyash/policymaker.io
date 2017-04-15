@@ -7,9 +7,10 @@ import newpolicyform from '@/components/newpolicyform';
 import simplequeryemployment from '@/components/simplequeryemployment';
 import chartjs from '@/components/chartjs';
 
-// import BarGraph from `@/components/BarGraph`
+import ActivityGraph from '@/components/ActivityGraph';
 
-// Vue.component('bar-graph', BarGraph)
+
+Vue.component('activity-graph', ActivityGraph)
 
 Vue.use(Router);
 
