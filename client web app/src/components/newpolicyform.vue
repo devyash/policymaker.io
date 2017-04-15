@@ -5,10 +5,12 @@
 
     <div class="container-fluid">
   <div class="row">
-   <div class="col-md-6 col-sm-6 col-xs-12">
+   <div >
     <form method="post">
-     <b><h1>New Policy Submission Form</h1>
-     <h3>Policy ID: {{policyid}}</h3></b>
+    <h1 class="page-header">New Policy Submission Form</h1>
+     <div class="panel panel-default">
+     <div class="panel-heading">Policy ID: {{policyid}}</div>
+     <div class="panel-body">
      <div class="form-group ">
       <label class="control-label requiredField" for="domain">
        Domain
@@ -65,6 +67,8 @@
        </button>
       </div>
      </div>
+     </div> 
+     </div>
     </form>
    </div>
   </div>
@@ -88,6 +92,18 @@ export default {
                     {
                       text:"Education",
                       value:"Education"
+                    },
+                    {
+                      text:"Population",
+                      value:"Population"
+                    },
+                    {
+                      text:"Employment",
+                      value:"Employment"
+                    },
+                    {
+                      text:"Poverty",
+                      value:"Poverty"
                     }
       ]
 

@@ -16,6 +16,7 @@
     "chart.js": "^2.5.0",
     "vue": "^2.2.2",
     "vue-chartjs": "^2.6.0",
+    "vue-morris": "0.0.7",
     "vue-router": "^2.2.0"
   },
   "devDependencies": {

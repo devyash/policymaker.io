@@ -9,6 +9,12 @@ import Maps from '@/components/Maps';
 import ActivityGraph from '@/components/ActivityGraph';
 
 
+// Do not forget to import raphael
+import Raphael from 'raphael/raphael'
+global.Raphael = Raphael
+import { DonutChart } from 'vue-morris'
+
+
 Vue.component('activity-graph', ActivityGraph)
 
 

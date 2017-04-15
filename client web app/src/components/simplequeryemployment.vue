@@ -92,33 +92,39 @@
               <h4 style="text-align:left"> Graphs</h4>
             </div>
             <div class="panel-body">
-            <p>This is a graph body</p>
+              <p>This is a graph body</p>
               <activity-graph :labels=labels :row=row :name=name></activity-graph>
-            </div>
+              <donut-chart 
+              id="donut" 
+              :data="donutData" 
+              colors='[ "#FF6384", "#36A2EB", "#FFCE56" ]' 
+              resize="true">
+            </donut-chart>
           </div>
         </div>
+      </div>
 
-        <!-- ---------------------------------------------------------------->
+      <!-- ---------------------------------------------------------------->
       <!-- QUERY -->
-        <div class="row">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h4 style="text-align:left"> QUERY</h4>
-            </div>
-            <div class="panel-body">
-              <pre>This is the QUERY</pre>
-            </div>
+      <div class="row">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 style="text-align:left"> QUERY</h4>
+          </div>
+          <div class="panel-body">
+            <pre>This is the QUERY</pre>
           </div>
         </div>
+      </div>
 
-        <!-- ---------------------------------------------------------------->
+      <!-- ---------------------------------------------------------------->
 
 <!-- 
 
 
-        <pre>{{ $data }}</pre> -->
-      </div>
-    </div>
+  <pre>{{ $data }}</pre> -->
+</div>
+</div>
 
 
 
@@ -129,21 +135,23 @@
 
 
 
-  </template>
+</template>
 
-  <script>
- 
-    export default {
-      name: 'header',
-      data() {
-        return {
-          type: '',
-          selectrange: '',
-          N:'',
-          year: '',
-          criteria: '',
-          labels: ['LOLOL', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-          row: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
+<script>
+
+import { DonutChart } from 'vue-morris'
+
+  export default {
+    name: 'header',
+    data() {
+      return {
+        type: '',
+        selectrange: '',
+        N:'',
+        year: '',
+        criteria: '',
+        labels: ['LOLOL', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        row: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
           // name: "Results",
           gridColumns: ['attribute','value'],
           gridData: [
@@ -153,14 +161,22 @@
           { attribute: 'TA', value: 193912 }
           ],
           someData: "",
-          displayResult: false
+          displayResult: false,
+          donutData: [
+          { label: 'Employeed', value: 300 },
+          { label: 'Unemployed', value: 10 }
+          ],
         };
       },
+      components: {
+        DonutChart
+      },
+
       computed:{
         name: function(){
           if(!this.selectrange || !this.N)
             return "Result"
-          else
+          else  
             return this.selectrange +" "+this.N;
         }
       },
