@@ -1,6 +1,7 @@
 <template>
   <div
   <div class="newpolicyform" >
+  
 
     <div class="container-fluid">
   <div class="row">
@@ -103,9 +104,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .newpolicyform{
-    position: relative;
-    left: 20%;
-    border: 3px solid #00000;
-  }
 </style>

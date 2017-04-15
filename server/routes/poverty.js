@@ -7,7 +7,7 @@ SimpleOracleDB = require('simple-oracledb');
 SimpleOracleDB.extend(oracledb);
 oracledb.Promise = Promise;//setting promise library tobluebird
 oracledb.outFormat = oracledb.OBJECT;
-oracledb.maxRows = 500;
+oracledb.maxRows = 100000;
 
 
 // Get Oracle Connection only 1 connection 
@@ -30,7 +30,7 @@ function respond(req, res, next) {
           let output=result.rows;
           res.send(output);
           //console.log(result.rows);
-          //return conn.close();
+          return conn.close();
         })
 
     })

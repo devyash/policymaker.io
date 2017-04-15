@@ -1,11 +1,12 @@
 <template>
-        <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
+<div>
+       <!--  <div id="page-wrapper"> -->
+<!--             <div class="row"> -->
+<!--                 <div class="col-lg-12"> -->
                     <h1 class="page-header">Dashboard</h1>
-                </div>
+<!--                 </div> -->
                 <!-- /.col-lg-12 -->
-            </div>
+<!--             </div> -->
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-3 col-md-6">
@@ -20,13 +21,13 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <router-link to="/employment/simple">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                 <div class="clearfix"></div>
                             </div>
-                        </a>
+                        </router-link>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -62,13 +63,13 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <router-link to="/chartjs">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                 <div class="clearfix"></div>
                             </div>
-                        </a>
+                        </router-link>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -296,7 +297,7 @@
             </div>
             <!-- /.row -->
         </div>
-        <!-- /#page-wrapper -->
+<!--         /#page-wrapper -->
 </template>
 
 <script>
