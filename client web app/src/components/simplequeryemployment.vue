@@ -40,10 +40,10 @@
         </div>
       </div>
     </div>
-<!-- ---------------------------------------------------------------------- -->
-<!--Complex Query-->
+    <!-- ---------------------------------------------------------------------- -->
+    <!--Complex Query-->
 
-<div class="container-fluid">
+    <div class="container-fluid">
       <div class="row">
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -109,75 +109,75 @@
 
 
 
-      <!-- --------------------------------------------------------------------- -->
+    <!-- --------------------------------------------------------------------- -->
 
-      <div class="container-fluid" v-if="displayResult==true">
+    <div class="container-fluid" v-if="displayResult==true">
 
-        <!-- TABLE-->
+      <!-- TABLE-->
 
-        <div class="row">
-          <div class="panel panel-default">
-            <div class= "panel-heading"> <h4 style="text-align:left">Results: Table</h4></div>
-            <div class="panel-body">
-              <table class="table table-bordered table-responsive">
-                <thead style="text-align:center">
-                  <tr>
-                    <th v-for="entery in gridColumns">{{entery}}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="entry in gridData">
-                    <td v-for="key in gridColumns">
-                      {{entry[key]}}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- ------------------------------------------------------------------ -->
-
-        <div class="row">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h4 style="text-align:left"> Graphs</h4>
-            </div>
-            <div class="panel-body">
-              <activity-graph :labels=labels :row=row :name=name></activity-graph>
-              <donut-chart 
-              id="donut" 
-              :data="donutData" 
-              colors='[ "#FF6384", "#36A2EB", "#FFCE56" ]' 
-              resize="true">
-            </donut-chart>
+      <div class="row">
+        <div class="panel panel-default">
+          <div class= "panel-heading"> <h4 style="text-align:left">Results: Table</h4></div>
+          <div class="panel-body">
+            <table class="table table-bordered table-responsive">
+              <thead style="text-align:center">
+                <tr>
+                  <th v-for="entery in gridColumns">{{entery}}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="entry in gridData">
+                  <td v-for="key in gridColumns">
+                    {{entry[key]}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
 
-      <!-- ---------------------------------------------------------------->
-      <!-- QUERY -->
+      <!-- ------------------------------------------------------------------ -->
+
       <div class="row">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h4 style="text-align:left"> QUERY</h4>
+            <h4 style="text-align:left"> Graphs</h4>
           </div>
           <div class="panel-body">
-            <pre></pre>
-          </div>
+            <activity-graph :labels=labels() :row=row() :name=name></activity-graph>
+            <donut-chart 
+            id="donut" 
+            :data="donutData" 
+            colors='[ "#FF6384", "#36A2EB", "#FFCE56" ]' 
+            resize="true">
+          </donut-chart>
         </div>
       </div>
+    </div>
 
-      <!-- ---------------------------------------------------------------->
+    <!-- ---------------------------------------------------------------->
+    <!-- QUERY -->
+    <div class="row">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 style="text-align:left"> QUERY</h4>
+        </div>
+        <div class="panel-body">
+          <pre></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------------------------------------------------------------->
 
 
 
 
 
-</div>
-<!--   <pre>{{ $data }}</pre>   -->
+  </div>
+  <!--   <pre>{{ $data }}</pre>   -->
 </div>
 
 
@@ -203,13 +203,13 @@
         selectrange: '',
         N:0,
         criteria: '',
-          gridData: [],
-          someData: "",
-          displayResult: false,
-          donutData: [
-          { label: 'Employed', value: 300 },
-          { label: 'Unemployed', value: 10 }
-          ],
+        gridData: [],
+        someData: "",
+        displayResult: false,
+        donutData: [
+        { label: 'Employed', value: 300 },
+        { label: 'Unemployed', value: 10 }
+        ],
         criteriac: '',
         ratec: '',
         fromc: '',
@@ -217,43 +217,27 @@
         selectrangec:'',
         Nc:0,
 
-        };
-      },
-      components: {
-        DonutChart
-      },
+      };
+    },
+    components: {
+      DonutChart
+    },
 
-      computed:{
+    computed:{
 
-        name: function(){
-          if(!this.selectrange || !this.N)
-            return "Result"
-          else  
-            return "The first "+this.N+" Counties in "+this.selectrange +" order based on "+this.capitalizeFirstLetter(this.criteria)+" people" ;
-        },
-        gridColumns: function(){
-          return Object.keys(this.gridData[0]);
-        },
-        labels: function(){
-          let a=[]
-          this.gridData.map(x=>a.push(x.COUNTY))
-          return a
-        },
-        row: function(){
-          if(this.type=="simple"){
-            let a=[]
-            this.gridData.map(x=>a.push(x.ATTRIBUTE1))
-            return a
-          }
-          else if(this.type=="complex"){
-            let a=[]
-            this.gridData.map(x=>a.push(x.RATE))
-            return a
-          }
-        }
+      name: function(){
+        if(!this.selectrange || !this.N)
+          return "Result"
+        else  
+          return "The first "+this.N+" Counties in "+this.selectrange +" order based on "+this.capitalizeFirstLetter(this.criteria)+" people" ;
       },
-      methods: {
-        submitSimple: function () {
+      gridColumns: function(){
+        return Object.keys(this.gridData[0]);
+      }
+
+    },
+  methods: {
+    submitSimple: function () {
       // send a GET REQUEST
       // GET /someUrl
       let url="http://localhost:5000/employment";
@@ -274,7 +258,7 @@
         }).then(()=>{
           this.displayResult=true;
         }).catch((e)=>{
-        console.log(e);})
+          console.log(e);})
 
       //Whatever data you get update the coloumn name accordingly
 
@@ -306,18 +290,34 @@
         }).then(()=>{
           this.displayResult=true;
         }).catch((e)=>{
-        console.log(e);})
+          console.log(e);})
 
       //Whatever data you get update the coloumn name accordingly
 
-
-
     },
     capitalizeFirstLetter: function(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    ,
+    labels: function(){
+      let a=[]
+      this.gridData.map(x=>a.push(x.COUNTY))
+      return a
+    },
+    row: function(){
+      if(this.type=="simple"){
+        let a=[]
+        this.gridData.map(x=>a.push(x.ATTRIBUTE1))
+        return a
+      }
+      else if(this.type=="complex"){
+        let a=[]
+        this.gridData.map(x=>a.push(x.RATE))
+        return a
+      }
     }
   }
-};
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

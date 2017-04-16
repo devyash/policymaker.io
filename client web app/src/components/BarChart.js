@@ -13,14 +13,29 @@ export default Bar.extend({
     mounted () {
     // Overwriting base render method with actual data.
     this.renderChart({
-      labels: this.locallabels,
+      labels: this.labels,
       datasets: [
       {
-        label: this.localname.toString(),
+        label: this.name.toString(),
         backgroundColor: '#f87979',
-        data: this.localrow
+        data: this.row
       }
       ]
     }, {responsive:true, maintainAspectRatio: false })
-  }
+  },
+    watch: {
+    // whenever labels changes, this function will run
+    labels: function () {
+      this.renderChart({
+      labels: this.labels,
+      datasets: [
+      {
+        label: this.name.toString(),
+        backgroundColor: '#f87979',
+        data: this.row
+      }
+      ]
+    }, {responsive:false, maintainAspectRatio: false })
+    }
+  },
 })
