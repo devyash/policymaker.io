@@ -1,33 +1,28 @@
 <template>
 
-  <div class="simplequeryemployment">
+  <div class="PovertyGraph">
 
 
     <div class="container-fluid">
-      <h1 class="page-header">Employment Statistics</h1>
+      <h1 class="page-header">Poverty Statistics</h1>
       <div class="row">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h4 style="text-align:left">Query to retrieve the required leading/trailing states/counties based on employment/unemployment criteria filtering.</h4>
+            <h4 style="text-align:center">Query to retrieve poverty average and employment average relationship.</h4>
           </div>  
           <div class= "panel-body">
             <form method="POST" class="form-inline" >
               <div class="form-group">
                 <label class="col-2 col-form-label" for="selectrange">Order</label>
                 <select v-model="selectrange" class="form-control" id="selectrange" required>
-                  <option disabled value="">Please Select a Query Type</option>
+                  <option disabled value="">Please Select an Order</option>
                   <option>decreasing</option>
                   <option>increasing</option>
                 </select>
                 <label class="col-2 col-form-label" for="N" > N:</label>
 
                 <input type="text" name="Value" v-model='N' required>
-                <label class="col-1 col-form-label" for="criteria"> Criteria:</label>
-                <select v-model='criteria' class="form-control">
-                  <option disabled value="">Please Select a Selection Criterea</option>
-                  <option>employed</option>
-                  <option>unemployed</option>
-                </select>
+                
                 <div class="form-group col-2 col-form-label ">
 
                   <button type="Submit" v-on:click.prevent=submitSimple() class=" btn btn-primary col-sm-12">Retrieve</button>
@@ -47,51 +42,33 @@
       <div class="row">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h4 style="text-align:left">Query to retrieve the state/county along with the corresponding growth/decline rate trends in employment/unemployment from given year to other:</h4>
+            <h4 style="text-align:center">Query to retrieve the state and county  with maximum adult or teen or children Population:</h4>
           </div>  
           <div class= "panel-body">
             <form method="POST" class="form-inline" >
               <div class="form-group">
-                <label class="col-2 col-form-label" for="criteria">Criteria:</label>
+                <label class="col-2 col-form-label" for="operationc">Operation:</label>
+                <select v-model="operationc" class="form-control" id="selectrange" required>
+                  <option disabled value="">Please Select a Max or Min</option>
+                  <option>max</option>
+                  <option>min</option>
+                </select>
+
+
+                <label class="col-2 col-form-label" for="criteriac">Criteria:</label>
                 <select v-model="criteriac" class="form-control" id="selectrange" required>
-                  <option disabled value="">Please Select a Criteria Type</option>
-                  <option>employed</option>
-                  <option>unemployed</option>
+                  <option disabled value="">Please Select a population group</option>
+                  <option>adults</option>
+                  <option>children</option>
+                  <option>teens</option>
                 </select>
 
 
-                <label class="col-2 col-form-label" for="ratec">Rate:</label>
-                <select v-model="ratec" class="form-control" id="selectrange" required>
-                  <option disabled value="">Please Select a Rate Type</option>
-                  <option>growth</option>
-                  <option>decline</option>
-                </select>
-
-
-                <label class="col-2 col-form-label" for="fromc">From:</label>
-                <select v-model="fromc" class="form-control" id="selectrange" required>
-                  <option disabled value="">Please Select a Starting Year</option>
-                  <option v-for="n in 11">{{n+2006}}</option>
-                </select>
-
-
-                <label class="col-2 col-form-label" for="toc">to:</label>
-                <select v-model="toc" class="form-control" id="selectrange" required>
-                  <option disabled value="">Please Select a Ending Year</option>
-                  <option v-for="n in 11">{{n+2006}}</option>
-                </select>
 
                 <label class="col-2 col-form-label" for="Nc" > N:</label>
 
                 <input type="text" name="Value" v-model='Nc' required>
 
-
-                <label class="col-2 col-form-label" for="selectrangec">Order:</label>
-                <select v-model="selectrangec" class="form-control" id="selectrange" required>
-                  <option disabled value="">Please Select a Query Type</option>
-                  <option>decreasing</option>
-                  <option>increasing</option>
-                </select>
 
 
                 <div class="form-group col-2 col-form-label ">
@@ -177,7 +154,7 @@
 
 
 </div>
-<!--   <pre>{{ $data }}</pre>   -->
+  <pre>{{ $data }}</pre>  
 </div>
 
 
@@ -202,21 +179,17 @@
         type: '',
         selectrange: '',
         N:0,
-        criteria: '',
-          gridData: [],
-          someData: "",
-          displayResult: false,
-          donutData: [
-          { label: 'Employed', value: 300 },
-          { label: 'Unemployed', value: 10 }
-          ],
+        operationc:'',
         criteriac: '',
-        ratec: '',
-        fromc: '',
-        toc:'',
-        selectrangec:'',
         Nc:0,
-
+        gridData: [],
+        someData: "",
+        displayResult: false,
+        donutData: [
+        { label: 'Adults', value: 300 },
+        { label: 'Teens', value: 124 },
+        { label: 'children', value: 200 }
+        ]
         };
       },
       components: {
@@ -256,12 +229,11 @@
         submitSimple: function () {
       // send a GET REQUEST
       // GET /someUrl
-      let url="http://localhost:5000/employment";
+      let url="http://localhost:5000/poverty";
       this.type="simple"
       let params={
         type: this.type,
         selectrange: this.selectrange,
-        criteria: this.criteria,
         N: this.N
       };
       console.log(params);
@@ -285,16 +257,12 @@
       // send a GET REQUEST
       // GET /someUrl
       this.type='complex';
-      let url="http://localhost:5000/employment";
+      let url="http://localhost:5000/poverty";
       let params={
         type: this.type,
-        selectrangec: this.selectrangec,
         criteriac: this.criteriac,
         Nc: this.Nc,
-        fromc: this.fromc,
-        toc: this.toc,
-        ratec:this.ratec
-
+        operationc:this.operationc
       };
       console.log(params);
       this.$http.get(url,{params: params}).then((response) => {

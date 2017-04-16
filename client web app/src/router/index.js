@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Hello from '@/components/Hello';
 import EducationGraph from '@/components/EducationGraph';
+import PovertyGraph from '@/components/PovertyGraph';
 import newpolicyform from '@/components/newpolicyform';
 import simplequeryemployment from '@/components/simplequeryemployment';
 import Maps from '@/components/Maps';
@@ -52,6 +53,11 @@ export default new Router({
       path: '/maps',
       name: 'Maps',
       component: Maps,
-    }
+    },
+    {
+      path: '/povertygraph',
+      name: 'Poverty-Graph',
+      component: PovertyGraph,
+    },
   ],
 });
