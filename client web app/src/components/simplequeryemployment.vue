@@ -10,32 +10,24 @@
           <div class="panel-heading">
             <h4 style="text-align:left">Query 1</h4>
           </div>  
-          <h4>Gets the Top/Bottom 'N' For All States for a given year or all years based on selection criteria(Employed/Unemployed).</h4>
+          <h4>Gets the decreasing/increasing 'N' For All States for a given year or all years based on selection criteria(Employed/Unemployed).</h4>
           <div class= "panel-body">
             <form method="POST" class="form-inline" >
               <div class="form-group">
-                <label class="col-2 col-form-label" for="selectrange">SELECT</label>
+                <label class="col-2 col-form-label" for="selectrange">Order</label>
                 <select v-model="selectrange" class="form-control" id="selectrange" required>
                   <option disabled value="">Please Select a Query Type</option>
-                  <option>Top</option>
-                  <option>Bottom</option>
+                  <option>decreasing</option>
+                  <option>increasing</option>
                 </select>
-                <label class="col-2 col-form-label" for="N" > FOR</label>
+                <label class="col-2 col-form-label" for="N" > N:</label>
 
                 <input type="text" name="Value" v-model='N' required>
-
-                <label class="col-2 col-form-label" for="year">YEAR:</label>
-                <select v-model='year' class="form-control" id="year">
-                  <option disabled value="">Please Select a Value for year</option>
-                  <option>All Years</option>
-                  <option>Each Years</option>
-                </select>
-                <br>
                 <label class="col-1 col-form-label" for="criteria"> CRITERIA:</label>
                 <select v-model='criteria' class="form-control">
                   <option disabled value="">Please Select a Selection Criterea</option>
-                  <option>Employed</option>
-                  <option>Unemployed</option>
+                  <option>employed</option>
+                  <option>unemployed</option>
                 </select>
                 <div class="form-group col-2 col-form-label ">
 
@@ -119,10 +111,10 @@
 
       <!-- ---------------------------------------------------------------->
 
-<!-- 
 
 
-  <pre>{{ $data }}</pre> -->
+
+  <pre>{{ $data }}</pre>
 </div>
 </div>
 
@@ -139,27 +131,21 @@
 
 <script>
 
-import { DonutChart } from 'vue-morris'
+  import { DonutChart } from 'vue-morris'
 
   export default {
     name: 'header',
     data() {
       return {
-        type: '',
+        type: 'simple',
         selectrange: '',
-        N:'',
-        year: '',
+        N:1,
         criteria: '',
         labels: ['LOLOL', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         row: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
           // name: "Results",
-          gridColumns: ['attribute','value'],
-          gridData: [
-          { attribute: 'Rajesh', value: 9000 },
-          { attribute: 'Jackie Chan', value: 7000 },
-          { attribute: 'Jet Li', value: 8000 },
-          { attribute: 'TA', value: 193912 }
-          ],
+          gridColumns: ['STATE','COUNTY','ATTRIBUTE1'],
+          gridData: [],
           someData: "",
           displayResult: false,
           donutData: [
@@ -184,15 +170,25 @@ import { DonutChart } from 'vue-morris'
         submitQuery: function () {
       // send a GET REQUEST
       // GET /someUrl
-      fetch('https://httpbin.org/user-agent').then(response => {
-        alert("data sent and got a response!");
+      let url="http://localhost:5000/employment";
+      let params={
+        type: this.type,
+        selectrange: this.selectrange,
+        criteria: this.criteria,
+        N: this.N
+      };
+      console.log(params);
+      this.$http.get(url,{params: params}).then((response) => {
           // get body data
-          this.someData = response;
-          alert("Value set!");
-        });
+          this.gridData=response.data;
+          console.log("OUTPUT:");
+          console.log(response.data);
+        })
+          this.displayResult=true;
+
       //Whatever data you get update the coloumn name accordingly
 
-      this.displayResult=true;
+
 
     } 
   }

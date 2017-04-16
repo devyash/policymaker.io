@@ -13,8 +13,10 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
+    "axios": "^0.16.1",
     "chart.js": "^2.5.0",
     "vue": "^2.2.2",
+    "vue-axios": "^2.0.1",
     "vue-chartjs": "^2.6.0",
     "vue-morris": "0.0.7",
     "vue-router": "^2.2.0"

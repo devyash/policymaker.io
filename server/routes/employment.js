@@ -18,16 +18,24 @@ var connection = oracledb.getConnection(
   });
 
 function respond(req, res, next) {
-  if (req.params.year) {
-    console.log(req.params.year);
-  }
-    connection.then(function(conn) {
-      return conn.execute("SELECT * FROM employment")
+
+      
+      connection.then(function(conn) {
+
+        let N1=parseInt(req.params.N);
+        let top_bot=req.params.criteria;
+        let attribute1=req.params.selectrange;
+
+        let query="select * from TABLE(emp_pkg1.emp_topbot_fun(:top,:employed,:id))" 
+      return conn.execute(query,{
+        top: top_bot,
+        employed: attribute1,
+        id: N1
+      })
         .then(function(result) {
           let output=result.rows;
+          console.log(output);
           res.send(output);
-          //console.log(result.rows);
-          //return conn.close();
         })
 
     })
@@ -35,7 +43,7 @@ function respond(req, res, next) {
       console.error(err);
     });
 
- }
+    }
 
 module.exports = function (server) {
 server.get('/employment', respond);

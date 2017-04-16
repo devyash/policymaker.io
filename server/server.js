@@ -32,9 +32,17 @@ server.use(restify.queryParser());
 server.use(restify.gzipResponse());
 server.pre(restify.pre.sanitizePath());
 
+//Enable CORS temporary for all links
+server.use(
+  function crossOrigin(req,res,next){
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    return next();
+  }
+);
 
 routes(server);
 
-server.listen(8080, function() {
+server.listen(5000, function() {
   console.log('%s listening at %s', server.name, server.url);
 });
