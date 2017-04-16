@@ -8,9 +8,8 @@
       <div class="row">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h4 style="text-align:left">Query 1</h4>
+            <h4 style="text-align:left">Query to retrieve the required leading/trailing states/counties based on employment/unemployment criteria filtering.</h4>
           </div>  
-          <h4>Query to retrieve the required leading/trailing states/counties based on employment/unemployment criteria filtering.</h4>
           <div class= "panel-body">
             <form method="POST" class="form-inline" >
               <div class="form-group">
@@ -23,7 +22,7 @@
                 <label class="col-2 col-form-label" for="N" > N:</label>
 
                 <input type="text" name="Value" v-model='N' required>
-                <label class="col-1 col-form-label" for="criteria"> CRITERIA:</label>
+                <label class="col-1 col-form-label" for="criteria"> Criteria:</label>
                 <select v-model='criteria' class="form-control">
                   <option disabled value="">Please Select a Selection Criterea</option>
                   <option>employed</option>
@@ -84,7 +83,6 @@
               <h4 style="text-align:left"> Graphs</h4>
             </div>
             <div class="panel-body">
-              <p>This is a graph body</p>
               <activity-graph :labels=labels :row=row :name=name></activity-graph>
               <donut-chart 
               id="donut" 
@@ -112,9 +110,8 @@
       <!-- ---------------------------------------------------------------->
 
 
-
-
-  <pre>{{ $data }}</pre>
+<!-- 
+  <pre>{{ $data }}</pre> -->
 </div>
 </div>
 
@@ -141,10 +138,6 @@
         selectrange: '',
         N:1,
         criteria: '',
-        labels: ['LOLOL', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-        row: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
-          // name: "Results",
-          gridColumns: ['STATE','COUNTY','ATTRIBUTE1'],
           gridData: [],
           someData: "",
           displayResult: false,
@@ -163,7 +156,20 @@
           if(!this.selectrange || !this.N)
             return "Result"
           else  
-            return this.selectrange +" "+this.N;
+            return "The "+this.selectrange +"  for"+this.N;
+        },
+        gridColumns: function(){
+          return Object.keys(this.gridData[0]);
+        },
+        labels: function(){
+          let a=[]
+          this.gridData.map(x=>a.push(x.COUNTY))
+          return a
+        },
+        row: function(){
+          let a=[]
+          this.gridData.map(x=>a.push(x.ATTRIBUTE1))
+          return a
         }
       },
       methods: {
@@ -172,7 +178,7 @@
       // GET /someUrl
       let url="http://localhost:5000/employment";
       let params={
-        type: this.type,
+        type: 'simple',
         selectrange: this.selectrange,
         criteria: this.criteria,
         N: this.N
@@ -180,11 +186,41 @@
       console.log(params);
       this.$http.get(url,{params: params}).then((response) => {
           // get body data
-          this.gridData=response.data;
           console.log("OUTPUT:");
           console.log(response.data);
-        })
+          this.gridData=response.data;
+
+        }).then(()=>{
           this.displayResult=true;
+        }).catch((e)=>{
+        console.log(e);})
+
+      //Whatever data you get update the coloumn name accordingly
+
+
+
+    },
+    submitComplex: function () {
+      // send a GET REQUEST
+      // GET /someUrl
+      let url="http://localhost:5000/employment";
+      let params={
+        type: 'simple',
+        selectrange: this.selectrange,
+        criteria: this.criteria,
+        N: this.N
+      };
+      console.log(params);
+      this.$http.get(url,{params: params}).then((response) => {
+          // get body data
+          console.log("OUTPUT:");
+          console.log(response.data);
+          this.gridData=response.data;
+
+        }).then(()=>{
+          this.displayResult=true;
+        }).catch((e)=>{
+        console.log(e);})
 
       //Whatever data you get update the coloumn name accordingly
 
