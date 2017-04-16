@@ -207,7 +207,7 @@
           someData: "",
           displayResult: false,
           donutData: [
-          { label: 'Employeed', value: 300 },
+          { label: 'Employed', value: 300 },
           { label: 'Unemployed', value: 10 }
           ],
         criteriac: '',
@@ -240,9 +240,16 @@
           return a
         },
         row: function(){
-          let a=[]
-          this.gridData.map(x=>a.push(x.ATTRIBUTE1))
-          return a
+          if(this.type=="simple"){
+            let a=[]
+            this.gridData.map(x=>a.push(x.ATTRIBUTE1))
+            return a
+          }
+          else if(this.type=="complex"){
+            let a=[]
+            this.gridData.map(x=>a.push(x.RATE))
+            return a
+          }
         }
       },
       methods: {
@@ -250,8 +257,9 @@
       // send a GET REQUEST
       // GET /someUrl
       let url="http://localhost:5000/employment";
+      this.type="simple"
       let params={
-        type: 'simple',
+        type: this.type,
         selectrange: this.selectrange,
         criteria: this.criteria,
         N: this.N
@@ -276,9 +284,10 @@
     submitComplex: function () {
       // send a GET REQUEST
       // GET /someUrl
+      this.type='complex';
       let url="http://localhost:5000/employment";
       let params={
-        type: 'complex',
+        type: this.type,
         selectrangec: this.selectrangec,
         criteriac: this.criteriac,
         Nc: this.Nc,

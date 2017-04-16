@@ -24,11 +24,11 @@ function respond(req, res, next) {
     let options={};
     let query='';
 
-    if (req.params.type = 'simple') {
+    if (req.params.type == 'simple') {
 
       let N=parseInt(req.params.N);
-        let criteria=req.params.criteria;//employed
-        let selectrange=req.params.selectrange;
+      let criteria=req.params.criteria;//employed
+      let selectrange=req.params.selectrange;
 
         query="select * from TABLE(emp_pkg1.emp_topbot_fun(:selectrange,:criteria,:N))"
         
@@ -40,26 +40,26 @@ function respond(req, res, next) {
       }
       else {
         let fromc=parseInt(req.params.fromc);
-        let to_year=parseInt(req.params.toc);
-        let rate_typ=req.params.ratec;
-        let order_typ=req.params.selectrangec;
-        let attribute1=req.params.criteriac;
-        let N=parseInt(req.params.Nc);
+        let toc=parseInt(req.params.toc);
+        let ratec=req.params.ratec;
+        let selectrangec=req.params.selectrangec;
+        let criteriac=req.params.criteriac;
+        let Nc=parseInt(req.params.Nc);
 
-        query="select * from TABLE(emp_pkg2.emp_growthdecline_fun(:from_year,:to_year,:rate_typ,:attribute1, :order_typ,:N))"
+        query="select * from TABLE(emp_pkg2.emp_growthdecline_fun(:fromc,:toc,:ratec,:criteriac, :selectrangec,:Nc))"
 
         options={
-          from_year: fromc,
-          to_year: to_year,
-          rate_typ: rate_typ,
-          attribute1: attribute1,
-          order_typ: order_typ,
-          N: N
+          fromc: fromc,
+          toc: toc,
+          ratec: ratec,
+          criteriac: criteriac,
+          selectrangec: selectrangec,
+          Nc: Nc
         }
       }
 
 
-
+        console.log(options);
         return conn.execute(query, options)
         .then(function(result) {
           let output=result.rows;
