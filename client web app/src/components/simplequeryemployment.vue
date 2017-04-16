@@ -10,7 +10,7 @@
           <div class="panel-heading">
             <h4 style="text-align:left">Query 1</h4>
           </div>  
-          <h4>Gets the decreasing/increasing 'N' For All States for a given year or all years based on selection criteria(Employed/Unemployed).</h4>
+          <h4>Query to retrieve the required leading/trailing states/counties based on employment/unemployment criteria filtering.</h4>
           <div class= "panel-body">
             <form method="POST" class="form-inline" >
               <div class="form-group">

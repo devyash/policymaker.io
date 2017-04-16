@@ -22,15 +22,15 @@ function respond(req, res, next) {
       
       connection.then(function(conn) {
 
-        let N1=parseInt(req.params.N);
-        let top_bot=req.params.criteria;
-        let attribute1=req.params.selectrange;
+        let N=parseInt(req.params.N);
+        let criteria=req.params.criteria;//employed
+        let selectrange=req.params.selectrange;
 
-        let query="select * from TABLE(emp_pkg1.emp_topbot_fun(:top,:employed,:id))" 
+        let query="select * from TABLE(emp_pkg1.emp_topbot_fun(:selectrange,:criteria,:N))" 
       return conn.execute(query,{
-        top: top_bot,
-        employed: attribute1,
-        id: N1
+        selectrange: selectrange,
+        criteria: criteria,
+        N: N
       })
         .then(function(result) {
           let output=result.rows;
