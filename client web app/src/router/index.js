@@ -15,9 +15,9 @@ import VueAxios from 'vue-axios'
 Vue.use(VueAxios, axios)
 
 
-// // Do not forget to import raphael
-// import Raphael from 'raphael/raphael'
-// global.Raphael = Raphael
+// Do not forget to import raphael
+import Raphael from 'raphael/raphael'
+global.Raphael = Raphael
 
 
 Vue.component('activity-graph', ActivityGraph)

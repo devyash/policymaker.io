@@ -224,11 +224,12 @@
       },
 
       computed:{
+
         name: function(){
           if(!this.selectrange || !this.N)
             return "Result"
           else  
-            return "The "+this.selectrange +"  for"+this.N;
+            return "The first "+this.N+" Counties in "+this.selectrange +" order based on "+this.capitalizeFirstLetter(this.criteria)+" people" ;
         },
         gridColumns: function(){
           return Object.keys(this.gridData[0]);
@@ -302,7 +303,10 @@
 
 
 
-    } 
+    },
+    capitalizeFirstLetter: function(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+    }
   }
 };
 </script>
