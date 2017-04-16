@@ -6,7 +6,7 @@ import PovertyGraph from '@/components/PovertyGraph';
 import newpolicyform from '@/components/newpolicyform';
 import simplequeryemployment from '@/components/simplequeryemployment';
 import Maps from '@/components/Maps';
-
+import PopulationGraph from '@/components/PopulationGraph';
 import ActivityGraph from '@/components/ActivityGraph';
 
 //Vue Axios (Basically fetch)
@@ -59,5 +59,10 @@ export default new Router({
       name: 'Poverty-Graph',
       component: PovertyGraph,
     },
+    {
+      path: '/populationGraph',
+      name: 'Population-Graph',
+      component: PopulationGraph,
+    }
   ],
 });
