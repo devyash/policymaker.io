@@ -21,24 +21,48 @@ var connection = oracledb.getConnection(
   });
 
 function respond(req, res, next) {
-  if (req.params.year) {
-    console.log(req.params.year);
-  }
-    connection.then(function(conn) {
-      return conn.execute("SELECT * FROM poverty")
-        .then(function(result) {
+  
+   connection.then(function(conn) {
+    let options={};
+    let query='';
+    let type = req.params.type;
+
+    if(type =='simple')
+    {
+    let N = parseInt(req.params.N);
+    let selectrange = req.params.selectrange; 
+    
+    query = "select * from TABLE(povertyanalysis.poverty_employment(:top,:N,:selectrange))"
+    options={
+        N : N,
+        selectrange: selectrange,
+        top : 'top'
+    }
+    } 
+    else if(type =='complex')
+    {
+    let Nc = parseInt(req.params.Nc);
+    let criteriac = req.params.criteriac; 
+    let operationc = req.params.operationc;
+
+    query1 =  "select * from TABLE(povertyanalysis1.poverty_employmentP(:operationc,:criteriac,:Nc))"
+    options = {
+        operationc : operationc,
+        criteriac: criteriac,
+        Nc: Nc
+      }
+    }
+  return conn.execute(query, options).then(function(result) {
           let output=result.rows;
+          console.log(output);
           res.send(output);
-          //console.log(result.rows);
-          return conn.close();
         })
-
-    })
-    .catch(function(err) {
-      console.error(err);
-    });
-
- }
+      }).catch(function(err) {
+    console.error(err);
+  });
+      
+}
+ 
 
 module.exports = function (server) {
 server.get('/poverty', respond);

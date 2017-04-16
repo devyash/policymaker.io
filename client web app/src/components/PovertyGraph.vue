@@ -202,7 +202,7 @@
           if(!this.selectrange || !this.N)
             return "Result"
           else  
-            return "The first "+this.N+" Counties in "+this.selectrange +" order based on "+this.capitalizeFirstLetter(this.criteria)+" people" ;
+            return "Poverty Result Graph" ;
         },
         gridColumns: function(){
           return Object.keys(this.gridData[0]);
