@@ -30,7 +30,73 @@
                 </select>
                 <div class="form-group col-2 col-form-label ">
 
-                  <button type="Submit" v-on:click.prevent=submitQuery() class=" btn btn-primary col-sm-12">Submit</button>
+                  <button type="Submit" v-on:click.prevent=submitSimple() class=" btn btn-primary col-sm-12">Retrieve</button>
+
+                </div>
+              </div>
+            </form>
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- ---------------------------------------------------------------------- -->
+<!--Complex Query-->
+
+<div class="container-fluid">
+      <div class="row">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 style="text-align:left">Query to retrieve the state/county along with the corresponding growth/decline rate trends in employment/unemployment from given year to other:</h4>
+          </div>  
+          <div class= "panel-body">
+            <form method="POST" class="form-inline" >
+              <div class="form-group">
+                <label class="col-2 col-form-label" for="criteria">Criteria:</label>
+                <select v-model="criteriac" class="form-control" id="selectrange" required>
+                  <option disabled value="">Please Select a Criteria Type</option>
+                  <option>employed</option>
+                  <option>unemployed</option>
+                </select>
+
+
+                <label class="col-2 col-form-label" for="ratec">Rate:</label>
+                <select v-model="ratec" class="form-control" id="selectrange" required>
+                  <option disabled value="">Please Select a Rate Type</option>
+                  <option>growth</option>
+                  <option>decline</option>
+                </select>
+
+
+                <label class="col-2 col-form-label" for="fromc">From:</label>
+                <select v-model="fromc" class="form-control" id="selectrange" required>
+                  <option disabled value="">Please Select a Starting Year</option>
+                  <option v-for="n in 11">{{n+2006}}</option>
+                </select>
+
+
+                <label class="col-2 col-form-label" for="toc">to:</label>
+                <select v-model="toc" class="form-control" id="selectrange" required>
+                  <option disabled value="">Please Select a Ending Year</option>
+                  <option v-for="n in 11">{{n+2006}}</option>
+                </select>
+
+                <label class="col-2 col-form-label" for="Nc" > N:</label>
+
+                <input type="text" name="Value" v-model='Nc' required>
+
+
+                <label class="col-2 col-form-label" for="selectrangec">Order:</label>
+                <select v-model="selectrangec" class="form-control" id="selectrange" required>
+                  <option disabled value="">Please Select a Query Type</option>
+                  <option>decreasing</option>
+                  <option>increasing</option>
+                </select>
+
+
+                <div class="form-group col-2 col-form-label ">
+
+                  <button type="Submit" v-on:click.prevent=submitComplex() class=" btn btn-primary col-sm-12">Retrieve</button>
 
                 </div>
               </div>
@@ -41,10 +107,7 @@
       </div>
     </div>
 
-<!-- TODO
-      <h4>Retrieve the counties accross all states in the increasing/decreasing order of growth rate based on a user defined criteria. </h4>
 
-      <p>Growth Rate Order: I/D (DD), From YEAR 2011-2015(DD) , TO YEAR, CRITERA: Employed/ Unemployment(DD) </p> -->
 
       <!-- --------------------------------------------------------------------- -->
 
@@ -102,7 +165,7 @@
             <h4 style="text-align:left"> QUERY</h4>
           </div>
           <div class="panel-body">
-            <pre>This is the QUERY</pre>
+            <pre></pre>
           </div>
         </div>
       </div>
@@ -110,9 +173,11 @@
       <!-- ---------------------------------------------------------------->
 
 
-<!-- 
-  <pre>{{ $data }}</pre> -->
+
+
+
 </div>
+  <pre>{{ $data }}</pre>  
 </div>
 
 
@@ -134,9 +199,9 @@
     name: 'header',
     data() {
       return {
-        type: 'simple',
+        type: '',
         selectrange: '',
-        N:1,
+        N:0,
         criteria: '',
           gridData: [],
           someData: "",
@@ -145,6 +210,13 @@
           { label: 'Employeed', value: 300 },
           { label: 'Unemployed', value: 10 }
           ],
+        criteriac: '',
+        ratec: '',
+        fromc: '',
+        toc:'',
+        selectrangec:'',
+        Nc:0,
+
         };
       },
       components: {
@@ -173,7 +245,7 @@
         }
       },
       methods: {
-        submitQuery: function () {
+        submitSimple: function () {
       // send a GET REQUEST
       // GET /someUrl
       let url="http://localhost:5000/employment";
@@ -205,10 +277,14 @@
       // GET /someUrl
       let url="http://localhost:5000/employment";
       let params={
-        type: 'simple',
-        selectrange: this.selectrange,
-        criteria: this.criteria,
-        N: this.N
+        type: 'complex',
+        selectrangec: this.selectrangec,
+        criteriac: this.criteriac,
+        Nc: this.Nc,
+        fromc: this.fromc,
+        toc: this.toc,
+        ratec:this.ratec
+
       };
       console.log(params);
       this.$http.get(url,{params: params}).then((response) => {
