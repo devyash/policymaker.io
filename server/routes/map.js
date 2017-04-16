@@ -22,10 +22,26 @@ function respond(req, res, next) {
       
       connection.then(function(conn) {
 
-      let query="select state, sum(employed) from employment where year = :year group by state" 
-      return conn.execute(query,{
-       year:2015
-      })
+      let options={};
+      let query = '';
+      let N = parseInt(req.params.N);
+
+      if(N==0){
+
+       query="select state, (sum(employed)-sum(unemployed)) from employment where year = :year group by state" 
+       options={
+        year:2015
+       }
+      } 
+      else if(N>0){
+        query="select state, total from (select state, (sum(employed)-sum(unemployed)) as total from employment+\
+        where year = :year group by state order by total desc) where rownum<=:N"
+        options={
+          year:2015,
+          N,
+        }
+      }
+      return conn.execute(query,options)
         .then(function(result) {
           let output=result.rows;
           console.log(output);
@@ -42,4 +58,3 @@ function respond(req, res, next) {
 module.exports = function (server) {
 server.get('/map', respond)
 };
-
