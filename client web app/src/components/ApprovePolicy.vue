@@ -12,10 +12,10 @@
   		</tr>
   	</thead>
   	<tbody>
-  	<tr>
-  	<td>12</td>
-  	<td>Harika is Stupid</td>
-  	<td>Not Approved</td>
+  	<tr v-for="p in policies">
+  	<td>{{p.POLICY_ID}}</td>
+  	<td>{{p.POLICY_NAME}}</td>
+  	<td>{{p.POLICY_APPROVED}}</td>
   	<td><button class="btn-success">Approve</button>
   <button class="btn-danger">Dis-Approve</button></td>
   	</tr>
@@ -29,9 +29,30 @@
 export default {
   data: function(){
   	return{
-
+      policies:[{
+        POLICY_ID: 1,
+        POLICY_NAME: "test",
+        POLICY_APPROVED: "Approved"
+      }]
   	}
   },
+  created: function () {
+   policies: {
+      let url="http://localhost:5000/policyapprove";
+
+      this.$http.get(url).then((response) => {
+          // get body data
+          console.log("OUTPUT:");
+          console.log(response.data);
+          this.policies=response.data;
+
+        }).then(()=>{
+          this.displayResult=true;
+        }).catch((e)=>{
+          console.log(e);})
+    }
+  }
+
 
 };
 </script>

@@ -84,39 +84,9 @@ var connection = oracledb.getConnection(
   });
 
 }
-function getfunc(req,res,next){
-  console.log("inside get")
 
-// Get Oracle Connection only 1 connection 
-var connection = oracledb.getConnection(
-  {
-   //  user          : "hv0",
-   //  password      : "Spider321!",
-    user          : "harika",
-    password      : "Oracleme893!2",
-    connectString : "oracle.cise.ufl.edu:1521/orcl",
-  });
-  console.log("connection got")
-
-let query2="Select policy_id, policy_name,policy_approved from policy"
-return conn.execute(query2)
-        .then(function(result) {
-          let abc=result.rows;
-          console.log(abc);
-          res.send(abc);
-        }).then(function(x) {
-        return conn.close();
-      })
-    
-  .catch(function(err) {
-    console.error(err);
-  });
-
-
-}
 
 module.exports = function (server) {
 server.post('/policy', respond);
-server.get('/policy',getfunc);
 
 };

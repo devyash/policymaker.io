@@ -24,33 +24,28 @@ var connection = oracledb.getConnection(
   connection.then(function(conn) {
     let query='';
 
-    var bindvars = {
-      ret:  { dir: oracledb.BIND_OUT, type: oracledb.NUMBER, maxSize: 30 }
-    };
-    
     if (req.params.type == 'population') {
-        query="select count(*) as entries from population"
-        bindvars=null
+        query="select count(*) as SUMTOTAL from population"
+        
       }
       else if (req.params.type == 'education'){
-         query="select count(*) as entries from education"
-         bindvars=null
+         query="select count(*) as SUMTOTAL from education"
+         
       }
       else if (req.params.type == 'employment'){
-         query="select count(*) as entries from employment"
-          bindvars=null
+         query="select count(*) as SUMTOTAL from employment"
+          
       }
       else if (req.params.type == 'poverty'){
-         query="select count(*) as entries from poverty"
-         bindvars=null
+         query="select count(*) as SUMTOTAL from poverty"
+         
       }
       else{
-         query="BEGIN :ret := returntotal(); END;"
+         query="select *  from table (rettotal.result1)"
 
       }
 
-        return conn.execute(query,bindvars)
-        .then(function(result) {
+        return conn.execute(query).then(function(result) {
           let output=result.rows;
           console.log(output);
           res.send(output);

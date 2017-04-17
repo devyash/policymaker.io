@@ -132,7 +132,7 @@
                                 <option>education</option>
                                 <option>poverty</option>
                                 <option>employment</option>
-                                <option>Total Data</option>
+                                <option>Total_Data</option>
                             </select>
                             <button class="btn-primary" v-on:click.prevent=getSize()>Get Size</button>
                             </form>
@@ -354,7 +354,14 @@ export default {
           // get body data
           console.log("OUTPUT:");
           console.log(response.data);
-          this.modalbody=response.data[0].ENTRIES*2;
+          
+          if(this.type=="Total_Data"){
+            this.modalbody=response.data[0].SUMTOTAL*1;
+          
+        }else{
+            this.modalbody=response.data[0].SUMTOTAL*2;
+        }
+
         }).then(()=>{
           this.showModal=true;
         }).catch((e)=>{
