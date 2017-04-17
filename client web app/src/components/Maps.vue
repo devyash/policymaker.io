@@ -2,17 +2,19 @@
 	<div class="Maps">
 
 		<div id="chartdiv"></div>
+		<button class="btn-primary" 	@click.prevent=submitEmployed()>Submit</button>
+		<pre>{{$data}}</pre>
 	</div>
 </template>
 
 <script >
-const optionsdata = {
-					type: 'map',
-					theme: 'light',
-					colorSteps: 10,
-					dataProvider: {
-						map: 'usaLow',
-						areas: [{
+
+	
+	export default{
+		data(){
+			return{
+
+				details:[{
 							id: 'US-AL',
 							value: 4447100,
 						}, {
@@ -162,7 +164,17 @@ const optionsdata = {
 						}, {
 							id: 'US-WY',
 							value: 493782
-						}],
+						}] ,
+			}
+		},
+		computed: {
+			optionsdata:function(){
+					return{type: 'map',
+					theme: 'light',
+					colorSteps: 10,
+					dataProvider: {
+						map: 'usaLow',
+						areas: this.details,
 					},
 
 					areasSettings: {
@@ -178,16 +190,53 @@ const optionsdata = {
 					export: {
 						enabled: true,
 					},
-				};
-var map = AmCharts.makeChart( "chartdiv",optionsdata);	;
-	export default{
-		data(){
-			return{
 				
+				}}
+
+		},
+		created: function(){
+			console.log("in created");
+			var map = AmCharts.makeChart( "chartdiv",this.optionsdata);
+		},
+		watch:{
+			details: function(){
+				console.log("in watch");
+				this.formatParams();
+				console.log(this.optionsdata);
+				var map = AmCharts.makeChart( "chartdiv",this.optionsdata);
+				return this.details
+
 			}
 		},
-		mount(){
-			
+		methods:{
+			submitEmployed: function () {
+			      // send a GET REQUEST
+			      // GET /someUrl
+			      var self=this;
+			      this.type='complex';
+			      let url="http://localhost:5000/map";
+			      this.$http.get(url).then((response) => {
+			          // get body data
+			          console.log("OUTPUT:");
+			          console.log(response.data);
+			          self.details=response.data;
+
+			        }).then(()=>{
+			        }).catch((e)=>{
+			        console.log(e);})
+
+			      //Whatever data you get update the coloumn name accordingly
+
+			    },
+			    formatParams: function(){
+			    	console.log("in formatParams")
+			    	console.log(this.details)
+			    	return this.details
+
+			    }
+
+
+
 		}
 	}
 
