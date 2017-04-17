@@ -141,10 +141,6 @@
   <modal v-if="showModal" @close="showModal = false" :modaltitle="modaltitle" :modalbody="modalbody"></modal>
 <!-- -------------- -->
 
-                            <form>
-                              <label class="col-form-label">Execute Custom Query:</label>
-                              <button class="btn-primary">Execute</button>
-                            </form>
 
 
 
@@ -181,7 +177,7 @@
                                             </p>
                                         </div>
                                         <div class="timeline-body">
-                                            <p>Goverment appoints various officials to survey andfind imprt data related to their locailty. The surveyors fill this collected data after verification of authentication from a superior authority</p>
+                                            <p>Government appoints various officials to survey and find important data related to their locality. The surveyors enter this collected data after verification of authentication from a superior authority into the system.</p>
                                         </div>
                                     </div>
                                 </li>
@@ -358,7 +354,7 @@ export default {
           // get body data
           console.log("OUTPUT:");
           console.log(response.data);
-          this.modalbody=response.data[0].ENTRIES;
+          this.modalbody=response.data[0].ENTRIES*2;
         }).then(()=>{
           this.showModal=true;
         }).catch((e)=>{

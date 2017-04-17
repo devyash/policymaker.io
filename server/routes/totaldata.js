@@ -1,4 +1,4 @@
-/*jslint node: true, indent: 2 */
+                        /*jslint node: true, indent: 2 */
 'use strict';
 let Promise,oracledb,SimpleOracleDB;
 Promise = require("bluebird"); //favourite promise library
@@ -23,24 +23,33 @@ var connection = oracledb.getConnection(
 
   connection.then(function(conn) {
     let query='';
+
+    var bindvars = {
+      ret:  { dir: oracledb.BIND_OUT, type: oracledb.NUMBER, maxSize: 30 }
+    };
+    
     if (req.params.type == 'population') {
         query="select count(*) as entries from population"
+        bindvars=null
       }
       else if (req.params.type == 'education'){
          query="select count(*) as entries from education"
+         bindvars=null
       }
       else if (req.params.type == 'employment'){
          query="select count(*) as entries from employment"
+          bindvars=null
       }
       else if (req.params.type == 'poverty'){
          query="select count(*) as entries from poverty"
+         bindvars=null
       }
       else{
-         query="select count(*) as entries from population join employment join poverty join employment"
-         
+         query="BEGIN :ret := returntotal(); END;"
+
       }
 
-        return conn.execute(query)
+        return conn.execute(query,bindvars)
         .then(function(result) {
           let output=result.rows;
           console.log(output);
@@ -57,4 +66,4 @@ var connection = oracledb.getConnection(
 module.exports = function (server) {
 server.get('/totaldata', respond);
 
-};
+}

@@ -81,10 +81,10 @@
         *
        </span>
       </label>
-      <textarea class="form-control" cols="40" id="policydiscription" name="policydiscription" rows="10"v-model="policydiscription"></textarea>
+      <textarea class="form-control" cols="40" id="policydescription" name="policydescription" rows="10"v-model="policydescription"></textarea>
      </div>
      <div class="form-group">
-      <div>
+     <div>
        <button class="btn btn-primary " name="submit" type="submit" v-on:click.prevent=submitPolicy()>
         Submit
        </button>
@@ -96,8 +96,12 @@
    </div>
   </div>
  </div>
+ <pre>{{$data}}</pre>
   </div>
+
+
 </template>
+
 
 <script>
 export default {
@@ -106,13 +110,10 @@ export default {
     return {
       policystate:'',
       policycounty:'',
-      policyarea:'',
-      policyid:0,
       policyname: '',
-      policydiscription:'',
+      policydescription:'',
       policyduration: 0,
       policybudget: 0,
-      policydomain: 0,
       selecteddomain:'',
       domainoptions:[
                     {
@@ -138,7 +139,29 @@ export default {
   methods: {
     submitPolicy: function () {
       // send a post request to Form POST URL
-      alert("Policy Submited")
+      let url="http://localhost:5000/policy";
+      let params={
+        type: "submit",
+        policystate: this.policystate,
+        policycounty: this.policycounty,
+        policyname: this.policyname,
+        policydescription: this.policydescription,
+        policyduration: this.policyduration,
+        policybudget: this.policybudget,
+        selecteddomain: this.selecteddomain
+
+      };
+      console.log(params);
+      this.$http.post(url,{body: params}).then((response) => {
+          // get body data
+          alert("Policy Submitted Successfully!");
+          console.log("OUTPUT:");
+          console.log(response.data);
+
+        }).then(()=>{
+          this.displayResult=true;
+        }).catch((e)=>{
+          console.log(e);})
     } 
   }
 };
