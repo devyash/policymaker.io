@@ -1,7 +1,8 @@
 # policymaker.io
 Policymaker.io is a full fledged management information system, that helps policy makers to analyses data in unemployment, population, poverty and education domains, which help in making better informed decisions.
 
-The application is a SPA made completely in [Vue.js](https://vuejs.org/). The back-end api has been developed in Node.js+ Restify.js. The database is ORACLE 11g.
+The application is a [SPA](https://en.wikipedia.org/wiki/Single-page_application) made completely in [Vue.js](https://vuejs.org/). The back-end REST API has been developed in Node.js+ Restify.js. The database is ORACLE 11g.
+
 
 ## Running in local host
 
@@ -14,5 +15,4 @@ In terminal two, type ``` npm run dev```
 
 ## UI Design
 ![Screnshot](https://github.com/devyash/policymaker.io/blob/master/UI%20-%20Design/dashboard.png)
-![Screnshot](https://github.com/devyash/policymaker.io/blob/master/UI%20-%20Design/dashboard%202.png)
 ![Screnshot](https://github.com/devyash/policymaker.io/blob/master/UI%20-%20Design/maps.png)
