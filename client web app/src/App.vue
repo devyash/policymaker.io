@@ -128,14 +128,14 @@
 
           </li>
           <li>
-            <a href="forms.html"><i class="fa fa-edit fa-fw"></i>Enter new Surey Data</a>
+            <router-link to="/newsurveydata"><i class="fa fa-edit fa-fw"></i>Enter new Surey Data</router-link>
           </li>
           <li>
             <router-link to="/policy/new/"><i class="fa fa-edit fa-fw"></i>Enter new Policy</router-link>
           </li>
 
           <li>
-            <a href="forms.html"><i class="fa fa-wrench fa-fw"></i> Approve Policies</a>
+            <router-link to="/approvepolicy"><i class="fa fa-wrench fa-fw"></i> Approve Policies</router-link>
           </li> 
 
 
@@ -143,7 +143,7 @@
             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Education<span class="fa arrow"></span></a>
             <ul class="nav nav-second-level">
               <li>
-                <a href="Education-charts.html">Statics and Graphs</a>
+                 <router-link to="/educationgraph">Statics and Graphs</router-link>
               </li>
               <li>
                 <a href="Education-tables   .html">Tables</a>
@@ -169,7 +169,7 @@
           <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Population<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <li>
-              <a href="Education-charts.html">Statics and Graphs</a>
+              <router-link to="/populationgraph">Statics and Graphs</router-link>
             </li>
             <li>
               <a href="Education-tables.html">Tables</a>
@@ -183,7 +183,7 @@
           <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Poverty<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <li>
-              <a href="Education-charts.html">Statics and Graphs</a>
+              <router-link to="/povertygraph">Statics and Graphs</router-link>
             </li>
             <li>
               <a href="Education-tables   .html">Tables</a>

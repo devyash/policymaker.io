@@ -11,10 +11,10 @@ oracledb.outFormat = oracledb.OBJECT;
 function respond(req, res, next) {
   var connection = oracledb.getConnection(
   {
-     // user          : "hv0",
-     // password      : "Spider321!",
-   user          : "harika",
-    password      : "Oracleme893!2",
+     user          : "hv0",
+     password      : "Spider321!",
+   // user          : "harika",
+   //  password      : "Oracleme893!2",
     connectString : "oracle.cise.ufl.edu:1521/orcl",
   });
   

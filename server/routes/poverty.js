@@ -45,7 +45,7 @@ function respond(req, res, next) {
     let criteriac = req.params.criteriac; 
     let operationc = req.params.operationc;
 
-    query1 =  "select * from TABLE(povertyanalysis1.poverty_employmentP(:operationc,:criteriac,:Nc))"
+    query =  "select * from TABLE(povertyanalysis1.poverty_employmentP(:operationc,:criteriac,:Nc))"
     options = {
         operationc : operationc,
         criteriac: criteriac,

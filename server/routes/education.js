@@ -10,36 +10,59 @@ oracledb.outFormat = oracledb.OBJECT;
 
 
 function respond(req, res, next) {
-    var connection = oracledb.getConnection(
+
+// Get Oracle Connection only 1 connection 
+var connection = oracledb.getConnection(
   {
-     // user          : "hv0",
-     // password      : "Spider321!",
-   user          : "harika",
+    // user          : "hv0",
+    // password      : "Spider321!",
+    user          : "harika",
     password      : "Oracleme893!2",
     connectString : "oracle.cise.ufl.edu:1521/orcl",
   });
-    
-  if (req.params.year) {
-    console.log(req.params.year);
-  }
-    connection.then(function(conn) {
-      return conn.execute("SELECT * FROM education")
+
+  connection.then(function(conn) {
+    let options={};
+    let query='';
+
+    if (req.params.type == 'simple') {
+
+      let N=parseInt(req.params.N);
+      
+        query="select * from TABLE(edu_pkg1.edu_litpov_fun(:N))"
+        
+        options={
+          N: N
+        }
+      }
+      else {
+        let fromyear=parseInt(req.params.fromyear);
+        let toyear=parseInt(req.params.toyear);
+        
+        query="select * from TABLE(edu_pkg2.edu_gap_fun(:fromyear,:toyear))"
+
+        options={
+          fromyear: fromyear,
+          toyear: toyear
+        }
+      }
+
+
+        console.log(options);
+        return conn.execute(query, options)
         .then(function(result) {
           let output=result.rows;
+          console.log(output);
           res.send(output);
-          //console.log(result.rows);
-          //return conn.close();
         }).then(function(x) {
         return conn.close();
       })
+      })
+  .catch(function(err) {
+    console.error(err);
+  });
 
-    })
-    .catch(function(err) {
-      console.error(err);
-    });
-
- }
-
+}
 module.exports = function (server) {
 server.get('/education', respond);
 

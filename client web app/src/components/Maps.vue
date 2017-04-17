@@ -197,6 +197,7 @@
 		created: function(){
 			console.log("in created");
 			var map = AmCharts.makeChart( "chartdiv",this.optionsdata);
+			
 		},
 		watch:{
 			details: function(){

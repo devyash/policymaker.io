@@ -4,11 +4,11 @@
 
 
     <div class="container-fluid">
-      <h1 class="page-header">Education Statistics</h1>
+      <h1 class="page-header"> <i class="fa fa-tasks fa-fw"></i> Education Statistics</h1>
       <div class="row">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h4 style="text-align:left">Query to analyze the state/county having low literacy rate based on school diploma to college graduates statistics and which are also below the poverty threshold based on the median household income.</h4>
+            <h4 style="text-align:left"><i class="fa fa-bar-chart-o fa-fw"></i> Query to analyze the state/county having low literacy rate based on school diploma to college graduates statistics and which are also below the poverty threshold based on the median household income.</h4>
           </div>  
           <div class= "panel-body">
             <form method="POST" class="form-inline" >
@@ -37,7 +37,7 @@
       <div class="row">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h4 style="text-align:left">Query to perform state/county education assessment based on graduation rate gap improvement(if exists) from one year to another and retrieve the state/county along with their improved education gap.</h4>
+            <h4 style="text-align:left"><i class="fa fa-bar-chart-o fa-fw"></i> Query to perform state/county education assessment based on graduation rate gap improvement(if exists) from one year to another and retrieve the state/county along with their improved education gap.</h4>
           </div>  
           <div class= "panel-body">
             <form method="POST" class="form-inline" >
@@ -133,16 +133,125 @@
 
       <!-- ---------------------------------------------------------------->
       <!-- QUERY -->
-      <div class="row">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 style="text-align:left"> QUERY</h4>
-          </div>
-          <div class="panel-body">
-            <pre></pre>
-          </div>
+   <div class="row">
+      <div class="panel panel-default" v-if="type=='simple'">
+        <div class="panel-heading">
+          <h4 style="text-align:left">BackEnd Magic</h4>
+        </div>
+        <div class="panel-body">
+          <pre>CREATE OR REPLACE PACKAGE edu_pkg1 IS
+
+  TYPE outrec_typ IS RECORD (
+   rowno NUMBER(20),
+    STATE  VARCHAR(2),
+    COUNTY VARCHAR2(30),
+    literacy_percentage NUMBER(20,4)
+  );
+
+  TYPE outrecset IS TABLE OF outrec_typ;
+
+  FUNCTION edu_litpov_fun(n NUMBER) RETURN outrecset PIPELINED;
+END edu_pkg1;
+/
+
+CREATE OR REPLACE PACKAGE BODY edu_pkg1 IS
+
+FUNCTION edu_litpov_fun(n in NUMBER) return outrecset PIPELINED IS
+
+out_rec outrec_typ;
+TYPE ref0 IS REF CURSOR;
+c0 ref0;
+
+BEGIN
+
+open c0 for
+select ROWNUM, state, county, literacy_percentage  from( select s.state as state, s.county as county, (s.p_Less_School_Diploma + s.p_School_Diploma) as literacy_percentage from education s where exists( 
+(select state,county from education where (p_Less_School_Diploma + p_School_Diploma )> (P_Some_College + P_4_Years_college) and state = s.state and county = s.county) 
+minus 
+(select state,county from poverty where med_household_inc > (Select avg(med_household_inc) from poverty) and state = s.state and county = s.county)
+) order by literacy_percentage) where ROWNUM <=N;
+
+loop
+ EXIT WHEN c0%NOTFOUND;
+ FETCH c0 INTO out_rec.rowno, out_rec.state,out_rec.county, out_rec.literacy_percentage;
+ Pipe row(out_rec);
+ end loop;
+ close c0; 
+
+RETURN;
+END edu_litpov_fun;
+END edu_pkg1;
+/</pre>
         </div>
       </div>
+      <div class="panel panel-default" v-if="type=='complex'">
+        <div class="panel-heading">
+          <h4 style="text-align:left">Back End Magic</h4>
+        </div>
+        <div class="panel-body">
+          <pre>
+            CREATE OR REPLACE PACKAGE edu_pkg2 IS
+
+  TYPE outrec_typ IS RECORD (
+   rowno NUMBER,
+   state EDUCATION.STATE%TYPE,
+   county EDUCATION.county%TYPE,
+ education_gap_rise EDUCATION.college_or_higher%TYPE
+  );
+
+TYPE outrec_typ2 IS RECORD (
+    state EDUCATION.STATE%TYPE,
+    county EDUCATION.county%TYPE,
+    education_gap_rise EDUCATION.college_or_higher%TYPE
+  );  
+  TYPE outrecset IS TABLE OF outrec_typ;
+  
+  FUNCTION edu_gap_fun(from_year NUMBER, to_year NUMBER) RETURN outrecset PIPELINED;
+END edu_pkg2;
+/
+
+CREATE OR REPLACE PACKAGE BODY edu_pkg2 IS
+
+FUNCTION edu_gap_fun(from_year in NUMBER, to_year in NUMBER) RETURN outrecset  pipelined is
+
+CURSOR c1 is 
+
+select state, county, abs(college_or_higher - less_school_diploma) as from_gap from education where year = from_year order by from_gap;
+
+to_gap NUMBER;
+out_rec outrec_typ;
+out_rec3 outrec_typ2;
+out_rec2 outrec_typ2;
+l_row NUMBER := 0;
+
+BEGIN 
+OPEN c1;
+
+LOOP
+FETCH c1 INTO out_rec2;
+EXIT WHEN C1%NOTFOUND; 
+
+SELECT state,county,abs(college_or_higher - less_school_diploma) as to_gap into out_rec3 from education where year = to_year and state = out_rec2.state and county = out_rec2.county;
+
+If  out_rec3.education_gap_rise > out_rec2.education_gap_rise then
+    l_row := l_row + 1;
+    out_rec.rowno := l_row; 
+  out_rec.state := out_rec3.state;
+  out_rec.county := out_rec3.county;
+  out_rec.education_gap_rise := out_rec3.education_gap_rise - out_rec2.education_gap_rise;
+Pipe row (out_rec);
+END IF;
+  
+End loop;
+
+return; 
+END edu_gap_fun;
+END edu_pkg2;
+/
+          </pre>
+        </div>
+      </div>
+    </div>
 
       <!-- ---------------------------------------------------------------->
 
@@ -151,7 +260,7 @@
 
 
 </div>
-  <pre>{{ $data }}</pre>  
+<!--   <pre>{{ $data }}</pre>   -->
 </div>
 
 
@@ -176,8 +285,8 @@
           someData: "",
           displayResult: false,
           donutData: [
-          { label: 'Employed', value: 300 },
-          { label: 'Unemployed', value: 10 }
+          { label: 'Educated', value: 102 },
+          { label: 'Uneducated', value: 10 }
           ],
         };
       },
@@ -209,7 +318,7 @@
           }
           else if(this.type=="complex"){
             let a=[]
-            this.gridData.map(x=>a.push(x.RATE))
+            this.gridData.map(x=>a.push(x.EDUCATION_GAP_RISE))
             return a
           }
         }
@@ -218,12 +327,10 @@
         submitSimple: function () {
       // send a GET REQUEST
       // GET /someUrl
-      let url="http://localhost:5000/employment";
+      let url="http://localhost:5000/education";
       this.type="simple"
       let params={
         type: this.type,
-        selectrange: this.selectrange,
-        criteria: this.criteria,
         N: this.N
       };
       console.log(params);
@@ -247,15 +354,11 @@
       // send a GET REQUEST
       // GET /someUrl
       this.type='complex';
-      let url="http://localhost:5000/employment";
+      let url="http://localhost:5000/education";
       let params={
         type: this.type,
-        selectrangec: this.selectrangec,
-        criteriac: this.criteriac,
-        Nc: this.Nc,
-        fromc: this.fromc,
-        toc: this.toc,
-        ratec:this.ratec
+        fromyear: this.fromyear,
+        toyear: this.toyear,
 
       };
       console.log(params);

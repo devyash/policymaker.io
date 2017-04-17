@@ -4,11 +4,11 @@
 
 
     <div class="container-fluid">
-      <h1 class="page-header">Population Statistics</h1>
+      <h1 class="page-header"> <i class="fa fa-tasks fa-fw"></i> Population Statistics</h1>
       <div class="row">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h4 style="text-align:center">Analyzing the major factor behind population growth across all states and counties from one year to another year:</h4>
+            <h4 style="text-align:center"><i class="fa fa-bar-chart-o fa-fw"></i> Analyzing the major factor behind population growth across all states and counties from one year to another year:</h4>
           </div>  
           <div class= "panel-body">
             <form method="POST" class="form-inline" >
@@ -47,7 +47,7 @@
       <div class="row">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h4 style="text-align:left"> Analyzing states and counties based on multiple parameters like Domestic Migrants, International Migrants, Births and Deaths.</h4>
+            <h4 style="text-align:left"><i class="fa fa-bar-chart-o fa-fw"></i>  Analyzing states and counties based on multiple parameters like Domestic Migrants, International Migrants, Births and Deaths.</h4>
           </div>  
           <div class= "panel-body">
             <form method="POST" class="form-inline" >
@@ -134,17 +134,181 @@
 
       <!-- ---------------------------------------------------------------->
       <!-- QUERY -->
-      <div class="row">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 style="text-align:left"> QUERY</h4>
-          </div>
-          <div class="panel-body">
-            <pre></pre>
-          </div>
+   <div class="row">
+      <div class="panel panel-default" v-if="type=='simple'">
+        <div class="panel-heading">
+          <h4 style="text-align:left"> Backend Query</h4>
+        </div>
+        <div class="panel-body">
+          <pre>
+            create or replace PACKAGE BODY PQUERY1 IS 
+
+FUNCTION POP_QUERY1 ( FACTOR_String IN VARCHAR , YEAR1 IN POPULATION.YEAR%TYPE , YEAR2 IN POPULATION.YEAR%TYPE)
+ RETURN OUTPUTTABLE PIPELINED IS
+
+CURSOR C IS 
+(SELECT STATE, COUNTY , POP_GROWTH,BIRTH_SUM,DEATH_SUM,DOM_SUM, INT_SUM 
+FROM (SELECT state,county, SUM(BIRTHS) AS BIRTH_SUM , SUM(DEATHS) AS DEATH_SUM , SUM(DOMestic_MIG) AS DOM_SUM ,
+SUM(INTernational_MIG) AS INT_SUM,
+(SUM(BIRTHS) -SUM(DEATHS) + SUM(DOMestic_MIG) + SUM(INTernational_MIG) ) AS POP_GROWTH FROM
+(SELECT * FROM  POPULATION WHERE YEAR BETWEEN 2011 AND 2015)
+GROUP BY STATE,COUNTY));
+max1 NUMBER(20);
+
+BEGIN 
+for i IN C
+LOOP 
+fetch i INTO FACTORS_ROW;
+   X := FACTORs_ROW.BIRTHS_SUM;
+  Y := FACTORs_ROW.DOM_SUM;
+  Z:= FACTORs_ROW.INT_SUM;
+  IF X>Y THEN max1:=X; ELSE max1 := Y; END IF;  IF max1 > Z THEN max1:=max1; ELSE max1:=Z;  END IF;
+  OUTPUT.STATE := FACTORS_ROW.STATE;
+  Output.county:= Factors_row.county;
+
+OUTPUT.CONTRINUTION_FACTOR := Factor_string;
+OUTPUT.CONTRIBUTION := max1;
+PIPE ROW(OUTPUT); 
+end loop
+
+RETURN;
+
+END POP_QUERY1;
+END PACKAGEQUERY1;
+          </pre>
         </div>
       </div>
+      <div class="panel panel-default" v-if="type=='complex'">
+        <div class="panel-heading">
+          <h4 style="text-align:left"> Back End Query</h4>
+        </div>
+        <div class="panel-body">
+          <pre>CREATE OR REPLACE PACKAGE POP_QUERY2 AS
 
+TYPE OUTPUT_STRUCTURE IS RECORD
+(
+ STATE VARCHAR2(100),
+ COUNTY VARCHAR2(100)
+);
+
+OUTPUT_ROW OUTPUT_STRUCTURE;
+TYPE OUTPUTTABLE IS TABLE OF OUTPUT_STRUCTURE;
+FUNCTION RESULT1 ( PAR1 IN VARCHAR, PAR2 IN VARCHAR) RETURN OUTPUTTABLE PIPELINED;
+END POP_QUERY2;
+/
+
+CREATE OR REPLACE PACKAGE BODY POP_QUERY2 IS
+
+ fUNCTION RESULT1 ( PAR1 VARCHAR, PAR2 VARCHAR) RETURN  OUTPUTTABLE PIPELINED IS
+ 
+ cursor c1 is  (Select * from (
+select state,county  from population
+group by state,county
+order by sum(Domestic_mig) Desc)
+where ROWNUM<=1000)
+INTERSECT
+ (Select * from (
+select state,county  from population
+group by state,county
+order by sum(Deaths) DESC )
+where ROWNUM<=1000);
+
+cursor c2 is (Select * from (
+select state,county  from population
+group by state,county
+order by sum(Domestic_mig) Desc)
+where ROWNUM<=1000)
+INTERSECT
+(select * from (
+select state,county  
+from population
+group by state,county
+order by sum(International_Mig) DESC)
+where ROWNUM<=1000);
+
+ CURSOR C3 IS (Select * from (
+select state,county  from population 
+group by state,county
+order by sum(Births) Desc)
+where ROWNUM<=1000)
+INTERSECT
+(select * from (
+select state,county  from population 
+group by state,county
+order by sum(International_Mig) DESC)
+where ROWNUM<=1000);
+
+CURSOR C4 IS (Select * from (
+select state,county  from population 
+group by state,county
+order by sum(Births) Desc
+)Where ROWNUM<=1000)
+INTERSECT
+(Select * from (
+select state,county  from population 
+group by state,county
+order by sum(Deaths) DESC)
+where ROWNUM<=1000);
+
+BEGIN
+
+ if (PAR1 = 'domestic_migration' and PAR2 = 'international_migration')
+ then
+OPEN C1;
+LOOP
+FETCH C1 INTO OUTPUT_ROW;
+EXIT WHEN C1%NOTFOUND;
+PIPE ROW(OUTPUT_ROW);
+END LOOP;
+ CLOSE C1;
+RETURN;
+ end if;
+
+ if (PAR1 = 'domestic_migration'  AND PAR2 = 'deaths') then
+ OPEN C2;
+LOOP
+
+FETCH C2 INTO OUTPUT_ROW;
+EXIT WHEN C2%NOTFOUND;
+PIPE row(OUTPUT_ROW);
+END LOOP;
+CLOSE C2;
+RETURN;
+
+ end if;
+
+ if (PAR1 = 'births' and PAR2 = 'international_migration') then
+ OPEN C3;
+LOOP
+
+FETCH C3 INTO OUTPUT_ROW;
+EXIT WHEN C3%NOTFOUND;
+PIPE row(OUTPUT_ROW);
+END LOOP;
+RETURN;
+CLOSE C3;
+ end if;
+
+ if (PAR1 = 'births'  AND PAR2 = 'deaths') then
+ OPEN C4;
+LOOP
+
+FETCH C4 INTO OUTPUT_ROW;
+EXIT WHEN C4%NOTFOUND;
+PIPE row(OUTPUT_ROW);
+END LOOP;
+RETURN;
+CLOSE C4;
+ end if;
+
+END RESULT1;
+END POP_QUERY2;
+/
+
+select * from Table(POP_QUERY2.RESULT1('domestic_migratiom','international_migration'));</pre>
+        </div>
+      </div>
+    </div>
       <!-- ---------------------------------------------------------------->
 
 
@@ -152,7 +316,7 @@
 
 
 </div>
-  <pre>{{ $data }}</pre>  
+<!--   <pre>{{ $data }}</pre>   -->
 </div>
 
 
@@ -219,7 +383,7 @@
         row: function(){
           if(this.type=="simple"){
             let a=[]
-            this.gridData.map(x=>a.push(x.ATTRIBUTE1))
+            this.gridData.map(x=>a.push(x.CONTRIBUTION_FACTOR))
             return a
           }
           else if(this.type=="complex"){
@@ -233,13 +397,12 @@
         submitSimple: function () {
       // send a GET REQUEST
       // GET /someUrl
-      let url="http://localhost:5000/employment";
+      let url="http://localhost:5000/population";
       this.type="simple"
       let params={
         type: this.type,
-        selectrange: this.selectrange,
-        criteria: this.criteria,
-        N: this.N
+        fromyear: this.fromyear,
+        toyear: this.toyear
       };
       console.log(params);
       this.$http.get(url,{params: params}).then((response) => {
@@ -262,15 +425,11 @@
       // send a GET REQUEST
       // GET /someUrl
       this.type='complex';
-      let url="http://localhost:5000/employment";
+      let url="http://localhost:5000/population";
       let params={
         type: this.type,
-        selectrangec: this.selectrangec,
-        criteriac: this.criteriac,
-        Nc: this.Nc,
-        fromc: this.fromc,
-        toc: this.toc,
-        ratec:this.ratec
+        parameter1: this.parameter1,
+        parameter2: this.parameter2
 
       };
       console.log(params);

@@ -4,11 +4,11 @@
 
 
     <div class="container-fluid">
-      <h1 class="page-header">Employment Statistics</h1>
+      <h1 class="page-header"><i class="fa fa-tasks fa-fw"></i> Employment Statistics</h1>
       <div class="row">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h4 style="text-align:left">Query to retrieve the required leading/trailing states/counties based on employment/unemployment criteria filtering.</h4>
+            <h4 style="text-align:left"><i class="fa fa-bar-chart-o fa-fw"></i>Query to retrieve the required leading/trailing states/counties based on employment/unemployment criteria filtering.</h4>
           </div>  
           <div class= "panel-body">
             <form method="POST" class="form-inline" >
@@ -47,7 +47,7 @@
       <div class="row">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h4 style="text-align:left">Query to retrieve the state/county along with the corresponding growth/decline rate trends in employment/unemployment from given year to other:</h4>
+            <h4 style="text-align:left"><i class="fa fa-bar-chart-o fa-fw"></i>Query to retrieve the state/county along with the corresponding growth/decline rate trends in employment/unemployment from given year to other:</h4>
           </div>  
           <div class= "panel-body">
             <form method="POST" class="form-inline" >
@@ -160,12 +160,150 @@
     <!-- ---------------------------------------------------------------->
     <!-- QUERY -->
     <div class="row">
-      <div class="panel panel-default">
+      <div class="panel panel-default" v-if="type=='simple'">
         <div class="panel-heading">
-          <h4 style="text-align:left"> QUERY</h4>
+          <h4 style="text-align:left"> Backend Query</h4>
         </div>
         <div class="panel-body">
-          <pre></pre>
+          <pre>CREATE OR REPLACE PACKAGE emp_pkg1 IS
+  TYPE outrec_typ IS RECORD (
+    row NUMBER(20), 
+    state  VARCHAR(2),
+    county VARCHAR2(30),
+  attribute1 NUMBER(10)
+  );
+  TYPE outrecset IS TABLE OF outrec_typ;
+  FUNCTION emp_topbot_fun (top_bot IN VARCHAR, attribute1 IN VARCHAR, N1 IN NUMBER) RETURN outrecset PIPELINED;
+END emp_pkg1;
+/
+CREATE or replace PACKAGE BODY emp_pkg1 IS
+
+ FUNCTION emp_topbot_fun(top_bot IN VARCHAR, attribute1 IN VARCHAR, N1 IN NUMBER) return outrecset Pipelined IS
+Out_rec outrec_typ;
+TYPE         ref0 IS REF CURSOR;
+cur0         ref0;
+
+
+BEGIN
+
+If attribute1 = 'employed' and top_bot = 'decreasing' then
+open cur0 for
+
+SELECT rownum,state,county, s_employed FROM (SELECT state, county,  SUM(EMPLOYED) AS S_EMPLOYED  FROM EMPLOYMENT GROUP BY state,county ORDER BY S_EMPLOYED desc)
+WHERE ROWNUM <= n1;
+
+Elsif attribute1 = 'unemployed' and top_bot = 'decreasing' then
+open cur0 for
+SELECT rownum,state,county, s_unemployed FROM (SELECT state, county,  SUM(unEMPLOYED) AS S_unEMPLOYED  FROM EMPLOYMENT GROUP BY state,county ORDER BY S_unEMPLOYED desc)
+WHERE ROWNUM <= n1;
+Elsif attribute1 = 'employed' and top_bot = 'increasing' then
+open cur0 for
+SELECT rownum,state,county, s_employed  
+FROM (SELECT state, county,  SUM(EMPLOYED) AS S_EMPLOYED  FROM EMPLOYMENT GROUP BY state,county ORDER BY S_EMPLOYED)
+WHERE ROWNUM <= n1;
+Else  
+open cur0 for
+  SELECT rownum, state,county, s_unemployed 
+  FROM (SELECT state, county,  SUM(unEMPLOYED) AS S_unEMPLOYED  FROM EMPLOYMENT GROUP BY state,county ORDER BY S_unEMPLOYED )
+WHERE ROWNUM <= n1;
+
+
+End if;
+
+loop
+ EXIT WHEN cur0%NOTFOUND;
+ FETCH cur0 INTO out_rec.row, out_rec.state,    out_rec.county,  
+                    out_rec.attribute1;
+ Pipe row(out_rec);
+
+ end loop;
+ close cur0; 
+    
+
+RETURN;
+
+END emp_topbot_fun;
+END emp_pkg1;
+/
+
+select * from TABLE(emp_pkg1.emp_topbot_fun(‘increasing’,’employed’, 10 ));</pre>
+        </div>
+      </div>
+      <div class="panel panel-default" v-if="type=='complex'">
+        <div class="panel-heading">
+          <h4 style="text-align:left"> BackEnd Query</h4>
+        </div>
+        <div class="panel-body">
+          <pre>
+            CREATE OR REPLACE PACKAGE emp_pkg2 IS
+  TYPE outrec_typ IS RECORD (
+    rowno NUMBER(20),
+    state  VARCHAR(2),
+    county VARCHAR2(30),
+    rate NUMBER(20,3)
+  );
+  TYPE outrecset IS TABLE OF outrec_typ;
+  FUNCTION emp_growthdecline_fun(from_year in NUMBER, to_year in NUMBER, rate_typ IN VARCHAR2, attribute1 VARCHAR2, order_typ VARCHAR2, N NUMBER) RETURN outrecset PIPELINED;
+END emp_pkg2;
+/
+CREATE or replace PACKAGE BODY emp_pkg2 IS
+
+FUNCTION emp_growthdecline_fun(from_year in NUMBER, to_year in NUMBER, rate_typ IN VARCHAR2, attribute1 VARCHAR2, order_typ VARCHAR2, N NUMBER) return outrecset Pipelined IS
+Out_rec outrec_typ;
+TYPE ref0 IS REF CURSOR;
+c0 ref0;
+
+BEGIN
+
+If attribute1 = 'employed' and rate_typ = 'growth' and order_typ = 'increasing' then
+open c0 for
+select ROWNUM, state, county, rate from (SELECT T1.STATE as state, T1.COUNTY as county, round(((T2.EMPLOYED - T1.EMPLOYED)/(T1.employed)),3) AS RATE FROM employment T1 CROSS JOIN employment T2 WHERE T1.STATE = T2.STATE AND T1.COUNTY = T2.COUNTY AND T1.YEAR = from_year AND T2.YEAR = to_year AND T1.STATE = T2.state and t2.employed > t1.employed ORDER BY rate DESC) where ROWNUM <=N; 
+
+elsIf attribute1 = 'unemployed' and rate_typ = 'growth' and order_typ = 'increasing' then
+open c0 for
+select ROWNUM, state, county, rate from (SELECT T1.STATE as state, T1.COUNTY as county, round(((T2.unEMPLOYED - T1.unEMPLOYED)/(T1.unemployed)),3) AS RATE FROM employment T1 CROSS JOIN employment T2 WHERE T1.STATE = T2.STATE AND T1.COUNTY = T2.COUNTY AND T1.YEAR = from_year AND T2.YEAR = to_year AND T1.STATE = T2.state and t2.unemployed > t1.unemployed ORDER BY rate DESC) where ROWNUM <=N; 
+
+elsIf attribute1 = 'employed' and rate_typ = 'decline' and order_typ = 'increasing' then
+open c0 for
+select ROWNUM, state, county, RATE from (SELECT T1.STATE as state, T1.COUNTY as county, round(((T1.EMPLOYED - T2.EMPLOYED)/(T1.employed)),3) AS RATE FROM employment T1 CROSS JOIN employment T2 WHERE T1.STATE = T2.STATE AND T1.COUNTY = T2.COUNTY AND T1.YEAR = from_year AND T2.YEAR = to_year AND T1.STATE = T2.state and t1.employed > t2.employed ORDER BY rate desc) where ROWNUM <=N; 
+
+elsIf attribute1 = 'unemployed' and rate_typ = 'decline' and order_typ = 'increasing' then
+open c0 for
+select ROWNUM, state, county, rate from (SELECT T1.STATE as state, T1.COUNTY as county, round(((T1.unEMPLOYED - T2.unEMPLOYED)/(T1.unemployed)),3) AS RATE FROM employment T1 CROSS JOIN employment T2 WHERE T1.STATE = T2.STATE AND T1.COUNTY = T2.COUNTY AND T1.YEAR = from_year AND T2.YEAR = to_year AND T1.STATE = T2.state and t1.unemployed > t2.unemployed ORDER BY rate desc) where ROWNUM <=N; 
+
+elsIf attribute1 = 'employed' and rate_typ = 'growth' and order_typ = 'decreasing' then
+open c0 for
+select ROWNUM, state, county, rate from (SELECT T1.STATE as state, T1.COUNTY as county, round(((T2.EMPLOYED - T1.EMPLOYED)/(T1.employed)),3) AS RATE FROM employment T1 CROSS JOIN employment T2 WHERE T1.STATE = T2.STATE AND T1.COUNTY = T2.COUNTY AND T1.YEAR = from_year AND T2.YEAR = to_year AND T1.STATE = T2.state and t2.employed > t1.employed ORDER BY rate) where ROWNUM <=N; 
+
+elsIf attribute1 = 'employed' and rate_typ = 'decline' and order_typ = 'decreasing' then
+open c0 for
+select ROWNUM, state, county, rate from (SELECT T1.STATE as state, T1.COUNTY as county, round(((T1.EMPLOYED - T2.EMPLOYED)/(T1.employed)),3) AS RATE FROM employment T1 CROSS JOIN employment T2 WHERE T1.STATE = T2.STATE AND T1.COUNTY = T2.COUNTY AND T1.YEAR = from_year AND T2.YEAR = to_year AND T1.STATE = T2.state and t1.employed > t2.employed ORDER BY rate) where ROWNUM <=N; 
+
+elsIf attribute1 = 'unemployed' and rate_typ = 'decline' and order_typ = 'decreasing' then
+open c0 for
+select ROWNUM, state, county, rate from (SELECT T1.STATE as state, T1.COUNTY as county, round(((T1.unEMPLOYED - T2.unEMPLOYED)/(T1.unemployed)),3) AS RATE FROM employment T1 CROSS JOIN employment T2 WHERE T1.STATE = T2.STATE AND T1.COUNTY = T2.COUNTY AND T1.YEAR = from_year AND T2.YEAR = to_year AND T1.STATE = T2.state and t1.unemployed > t2.unemployed ORDER BY rate) where ROWNUM <=N; 
+
+else
+open c0 for
+select ROWNUM, state, county , rate from (SELECT T1.STATE as state, T1.COUNTY as county, round(((T2.unemployed - T1.unemployed)/(T1.unemployed)),3) AS RATE FROM employment T1 CROSS JOIN employment T2 WHERE T1.STATE = T2.STATE AND T1.COUNTY = T2.COUNTY AND T1.YEAR = from_year AND T2.YEAR = to_year AND T2.unemployed > T1.unemployed ORDER BY rate) where ROWNUM <=N;
+  
+
+End if;
+
+loop
+ EXIT WHEN c0%NOTFOUND;
+ FETCH c0 INTO out_rec.rowno, out_rec.state,out_rec.county,  
+                    out_rec.rate;
+ Pipe row(out_rec);
+ end loop;
+ close c0; 
+    
+RETURN;
+
+END emp_growthdecline_fun;
+END emp_pkg2;
+/
+          </pre>
         </div>
       </div>
     </div>
