@@ -28,7 +28,7 @@ function respond(req, res, next) {
 
       if(!N){
 
-       query="select state, (sum(employed)-sum(unemployed)) as total from employment where year = :year group by state" 
+       query="select state, sum(employed) as employed,sum(unemployed) as unemployed from employment where year = :year group by state" 
        options={
         year:2015
        }
