@@ -125,7 +125,39 @@
                         <div class="panel-body">
                             <div id="morris-area-chart">
                                                         <!-- Popular Query Body-->
+                            <form class="form-inline">
+                            <label>Total Data in </label>
+                            <select class="col-form-label" v-model="type">
+                                <option>population</option>
+                                <option>education</option>
+                                <option>poverty</option>
+                                <option>employment</option>
+                                <option>Total Data</option>
+                            </select>
+                            <button class="btn-primary" v-on:click.prevent=getSize()>Get Size</button>
+                            </form>
                             </div>
+<!-- -------------MODAL -->
+  <modal v-if="showModal" @close="showModal = false" :modaltitle="modaltitle" :modalbody="modalbody"></modal>
+<!-- -------------- -->
+
+                            <form>
+                              <label class="col-form-label">Execute Custom Query:</label>
+                              <button class="btn-primary">Execute</button>
+                            </form>
+
+
+
+
+
+<!-- ----------- -->
+
+
+
+
+
+
+
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -298,6 +330,9 @@
             <!-- /.row -->
         </div>
 <!--         /#page-wrapper -->
+
+
+
 </template>
 
 <script>
@@ -305,10 +340,31 @@ export default {
   name: 'hello',
   data() {
     return {
-      msg: 'Welcome to Your Vue.js App',
+      type:"",
+      showModal:false,
+      modalbody:"0",
     };
   },
-};
+  methods:{
+     getSize: function () {
+      // send a GET REQUEST
+      // GET /someUrl
+      let url="http://localhost:5000/totaldata";
+      let params={
+        type: this.type,
+      };
+      console.log(params);
+      this.$http.get(url,{params: params}).then((response) => {
+          // get body data
+          console.log("OUTPUT:");
+          console.log(response.data);
+          this.modalbody=response.data[0].ENTRIES;
+        }).then(()=>{
+          this.showModal=true;
+        }).catch((e)=>{
+          console.log(e);})
+  }
+}}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

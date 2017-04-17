@@ -12,6 +12,7 @@ import newsurveydata from '@/components/newsurveydata';
 import ApprovePolicy from '@/components/ApprovePolicy';
 import AboutUs from '@/components/AboutUs';
 import Maps2 from '@/components/Maps2';
+import modal from '@/components/ModalTemplate';
 
 
 //Vue Axios (Basically fetch)
@@ -27,6 +28,7 @@ global.Raphael = Raphael
 
 
 Vue.component('activity-graph', ActivityGraph)
+Vue.component('modal', modal)
 
 
 Vue.use(Router);
