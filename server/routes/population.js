@@ -7,35 +7,69 @@ SimpleOracleDB = require('simple-oracledb');
 SimpleOracleDB.extend(oracledb);
 oracledb.Promise = Promise;//setting promise library tobluebird
 oracledb.outFormat = oracledb.OBJECT;
-// Get Oracle Connection only 1 connection 
-var connection = oracledb.getConnection(
-  {
-    // user          : "hv0",
-    // password      : "Spide123!",
-    user          : "harika",
-    password      : "Oracleme893!",
-    connectString : "oracle.cise.ufl.edu:1521/orcl",
-  });
 
 function respond(req, res, next) {
-  if (req.params.year) {
-    console.log(req.params.year);
-  }
+  var connection = oracledb.getConnection(
+  {
+     // user          : "hv0",
+     // password      : "Spider321!",
+   user          : "harika",
+    password      : "Oracleme893!2",
+    connectString : "oracle.cise.ufl.edu:1521/orcl",
+  });
+  
     connection.then(function(conn) {
-      return conn.execute("SELECT * FROM population")
+    let options={};
+    let query='';
+
+    if (req.params.type == 'simple') {
+
+      let _year1= parseInt(req.params.fromyear);
+        let _year2=parseInt(req.params.toyear);//employed
+
+          query="SELECT * FROM TABLE (PACKAGEQUERY1.FQUERY1 (:fromyear,:toyear))"
+        
+        options={
+          fromyear: _year1,
+          toyear: _year2,
+        }
+      }
+      else if (req.params.type =='complex')
+      {
+        
+        let parameter1=req.params.parameter1;
+        
+        let parameter2=req.params.parameter2;
+       
+        
+    
+        
+        
+
+        query="select * from Table(POP_QUERY2.RESULT1(:parameter1,:parameter2))"
+
+        options={
+          parameter1: parameter1,
+          parameter2: parameter2,
+          
+        }
+      }
+       return conn.execute(query, options)
         .then(function(result) {
           let output=result.rows;
+          console.log(output);
           res.send(output);
-          //console.log(result.rows);
-          //return conn.close();
-        })
+        }).then(function(x) {
+          console.log("Closing Connection..")
+        return conn.close();
+      })
+      })
+  .catch(function(err) {
+    console.error(err);
+  });
 
-    })
-    .catch(function(err) {
-      console.error(err);
-    });
+}
 
- }
 
 module.exports = function (server) {
 server.get('/population', respond);

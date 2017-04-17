@@ -7,17 +7,18 @@ SimpleOracleDB = require('simple-oracledb');
 SimpleOracleDB.extend(oracledb);
 oracledb.Promise = Promise;//setting promise library tobluebird
 oracledb.outFormat = oracledb.OBJECT;
-// Get Oracle Connection only 1 connection 
-var connection = oracledb.getConnection(
-  {
-    // user          : "hv0",
-    // password      : "Spide123!",
-    user          : "harika",
-    password      : "Oracleme893!",
-    connectString : "oracle.cise.ufl.edu:1521/orcl",
-  });
+
 
 function respond(req, res, next) {
+    var connection = oracledb.getConnection(
+  {
+     // user          : "hv0",
+     // password      : "Spider321!",
+   user          : "harika",
+    password      : "Oracleme893!2",
+    connectString : "oracle.cise.ufl.edu:1521/orcl",
+  });
+    
   if (req.params.year) {
     console.log(req.params.year);
   }
@@ -28,7 +29,9 @@ function respond(req, res, next) {
           res.send(output);
           //console.log(result.rows);
           //return conn.close();
-        })
+        }).then(function(x) {
+        return conn.close();
+      })
 
     })
     .catch(function(err) {

@@ -10,18 +10,18 @@ oracledb.outFormat = oracledb.OBJECT;
 oracledb.maxRows = 100000;
 
 
-// Get Oracle Connection only 1 connection 
-var connection = oracledb.getConnection(
+
+
+function respond(req, res, next) {
+  var connection = oracledb.getConnection(
   {
-    // user          : "hv0",
-    // password      : "Spide123!",
-    user          : "harika",
-    password      : "Oracleme893!",
+     // user          : "hv0",
+     // password      : "Spider321!",
+   user          : "harika",
+    password      : "Oracleme893!2",
     connectString : "oracle.cise.ufl.edu:1521/orcl",
   });
 
-function respond(req, res, next) {
-  
    connection.then(function(conn) {
     let options={};
     let query='';
@@ -56,7 +56,9 @@ function respond(req, res, next) {
           let output=result.rows;
           console.log(output);
           res.send(output);
-        })
+        }).then(function(x) {
+        return conn.close();
+      })
       }).catch(function(err) {
     console.error(err);
   });
