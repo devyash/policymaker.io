@@ -38,7 +38,7 @@
                                     <i class="fa fa-tasks fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div>Employement</div>
+                                    <div>Employment</div>
                                 </div>
                             </div>
                         </div>
@@ -111,7 +111,7 @@
                                         </li>
                                         <li><a href="#">See for Education</a>
                                         </li>
-                                        <li><a href="#">See for Employement</a>
+                                        <li><a href="#">See for Employment</a>
                                         </li>
                                         <li><a href="#">See for Population</a>
                                         </li>
@@ -286,14 +286,17 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="list-group">
-                                <a href="#" class="list-group-item">
+                            <router-link to="approvepolicy">
+                                <div class="list-group-item">
                                     <i class="fa fa-upload fa-fw"></i> ABC Policy
                                     <span class="pull-right text-muted small"><em>11-2-2016</em>
                                     </span>
-                                </a>
+                                </div>
+                                </router-link>
                             </div>
                             <!-- /.list-group -->
-                            <a href="#" class="btn btn-default btn-block">View All Pending Policies</a>
+                            <router-link to="approvepolicy">
+                            <div class="btn btn-default btn-block">View All Pending Policies</div></router-link>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -313,7 +316,9 @@
                                 </a>
                             </div>
                             <!-- /.list-group -->
-                            <a href="#" class="btn btn-default btn-block">View All Pending Survey data</a>
+                            <router-link to="approvepolicy">
+                            <div  class="btn btn-default btn-block">View All Pending Survey data</div>
+                            </router-link>
                         </div>
                         <!-- /.panel-body -->
                     </div>

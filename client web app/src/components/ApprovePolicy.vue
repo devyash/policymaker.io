@@ -29,11 +29,7 @@
 export default {
   data: function(){
   	return{
-      policies:[{
-        POLICY_ID: 1,
-        POLICY_NAME: "test",
-        POLICY_APPROVED: "Approved"
-      }]
+      policies:[]
   	}
   },
   created: function () {

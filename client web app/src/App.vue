@@ -153,7 +153,7 @@
           </li>
 
           <li>
-            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Employement<span class="fa arrow"></span></a>
+            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Employment<span class="fa arrow"></span></a>
             <ul class="nav nav-second-level">
               <li>
                <router-link to="/employment/simple">Statics and Graphs</router-link>

@@ -96,7 +96,102 @@
    </div>
   </div>
  </div>
- <pre>{{$data}}</pre>
+ <div v-if="displayResult==true">
+ <pre >create or replace trigger policy_trigger
+before insert on policy
+for each row
+
+DECLARE 
+
+l NUMBER;
+approveapproved varchar2(20) :='Approved';
+unapproveapproved varchar2(20) :='Not Approved';
+
+begin
+
+if :new.policy_domain = 'Education' then
+
+    select (:new.policy_budget/Less_school_diploma) into l from education where year = 1980 and state = :new.policy_state and county = :new.policy_county;    
+    if (l > 1000) then
+        :new.policy_approved := approveapproved; 
+
+
+    else
+
+   :new.policy_approved := unapproveapproved;
+
+    end if;
+    end if;
+
+if :new.policy_domain = 'Employment' then
+select (:new.policy_budget/employed ) into l from employment where year =  2007 and state = :new.policy_state and county = :new.policy_county;            
+if (l > 100) then
+        :new.policy_approved := approveapproved;
+
+         else 
+    :new.policy_approved := unapproveapproved;
+    end if;
+    end if;
+
+
+    if :new.policy_domain = 'Poverty' then
+select (:new.policy_budget/births ) into l from population where year =  2011 and state = :new.policy_state and county =  :new.policy_county; 
+if (l > 100) then
+       :new.policy_approved := approveapproved;
+         else 
+    :new.policy_approved := unapproveapproved;
+    end if;
+    end if;
+
+    if :new.policy_domain = 'Population' then
+select (:new.policy_budget/adults) into l from Poverty where state = :new.policy_state and county = :new.policy_county ; 
+if (l > 100) then
+       :new.policy_approved := approveapproved;
+         else 
+   :new.policy_approved := unapproveapproved;
+    end if;
+   end if;
+
+end;
+-----------------------------------------------------------------------------------------------------------------------------                        
+create or replace package policy_pkg is
+procedure insert_policy(
+       ppolicy_state IN policy.policy_state%TYPE,
+     ppolicy_county IN policy.policy_county%TYPE,
+     ppolicy_domain IN policy.policy_domain%TYPE,
+     ppolicy_duration IN policy.policy_duration%TYPE,
+     ppolicy_budget IN policy.policy_budget%TYPE,
+       ppolicy_name IN policy.policy_name%TYPE,
+     ppolicy_description IN policy.policy_description%TYPE);
+end;                                                                                                                                                                                                                                                                                                   create or replace package body policy_pkg is
+
+PROCEDURE insert_policy(
+       ppolicy_state IN policy.policy_state%TYPE,
+     ppolicy_county IN policy.policy_county%TYPE,
+     ppolicy_domain IN policy.policy_domain%TYPE,
+     ppolicy_duration IN policy.policy_duration%TYPE,
+     ppolicy_budget IN policy.policy_budget%TYPE,
+       ppolicy_name IN policy.policy_name%TYPE,
+     ppolicy_description IN policy.policy_description%TYPE)
+       
+IS
+lastPolicyId policy.policy_domain%TYPE;
+BEGIN
+
+
+  SELECT COUNT(*) 
+    INTO lastPolicyId 
+    FROM policy;
+
+  INSERT INTO policy VALUES (lastPolicyId+1, ppolicy_state, ppolicy_county, ppolicy_domain,ppolicy_duration, ppolicy_budget,ppolicy_name,ppolicy_description,
+            'None');
+
+  COMMIT;
+
+END;
+
+END policy_pkg;</pre>
+ </div>
   </div>
 
 
@@ -115,6 +210,7 @@ export default {
       policyduration: 0,
       policybudget: 0,
       selecteddomain:'',
+      displayResult: false,
       domainoptions:[
                     {
                       text:"Education",
