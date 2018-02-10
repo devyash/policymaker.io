@@ -18,8 +18,9 @@
   "homepage": "https://github.com/devyash/policymaker.io#readme",
   "dependencies": {
     "bluebird": "^3.5.0",
-    "oracledb": "^1.13.0",
-    "restify": "^4.3.0",
+    "oracledb": "https://github.com/oracle/node-oracledb/releases/download/v2.0.15/oracledb-src-2.0.15.tgz",
+    "restify": "^6.3.4",
+    "restify-plugins": "^1.6.0",
     "simple-oracledb": "^1.1.60"
   }
 }

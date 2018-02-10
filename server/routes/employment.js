@@ -23,14 +23,14 @@ function respond(req, res, next) {
     let options={};
     let query='';
 
-    if (req.params.type == 'simple') {
+    if (req.query.type == 'simple') {
 
-      let N=parseInt(req.params.N);
-      let criteria=req.params.criteria;//employed
-      let selectrange=req.params.selectrange;
+      let N=parseInt(req.query.N);
+      let criteria=req.query.criteria;//employed
+      let selectrange=req.query.selectrange;
 
         query="select * from TABLE(emp_pkg1.emp_topbot_fun(:selectrange,:criteria,:N))"
-        
+
         options={
           selectrange: selectrange,
           criteria: criteria,
@@ -38,12 +38,12 @@ function respond(req, res, next) {
         }
       }
       else {
-        let fromc=parseInt(req.params.fromc);
-        let toc=parseInt(req.params.toc);
-        let ratec=req.params.ratec;
-        let selectrangec=req.params.selectrangec;
-        let criteriac=req.params.criteriac;
-        let Nc=parseInt(req.params.Nc);
+        let fromc=parseInt(req.query.fromc);
+        let toc=parseInt(req.query.toc);
+        let ratec=req.query.ratec;
+        let selectrangec=req.query.selectrangec;
+        let criteriac=req.query.criteriac;
+        let Nc=parseInt(req.query.Nc);
 
         query="select * from TABLE(emp_pkg2.emp_growthdecline_fun(:fromc,:toc,:ratec,:criteriac, :selectrangec,:Nc))"
 

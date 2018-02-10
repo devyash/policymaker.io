@@ -24,19 +24,19 @@ var connection = oracledb.getConnection(
   connection.then(function(conn) {
     let query='';
 
-    if (req.params.type == 'population') {
+    if (req.query.type == 'population') {
         query="select count(*) as SUMTOTAL from population"
         
       }
-      else if (req.params.type == 'education'){
+      else if (req.query.type == 'education'){
          query="select count(*) as SUMTOTAL from education"
          
       }
-      else if (req.params.type == 'employment'){
+      else if (req.query.type == 'employment'){
          query="select count(*) as SUMTOTAL from employment"
           
       }
-      else if (req.params.type == 'poverty'){
+      else if (req.query.type == 'poverty'){
          query="select count(*) as SUMTOTAL from poverty"
          
       }

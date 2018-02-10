@@ -48,7 +48,7 @@
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                 <div class="clearfix"></div>
                             </div>
-                        </router-link>  
+                        </router-link>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -337,61 +337,61 @@
 </template>
 
 <script>
-export default {
-  name: 'hello',
-  data() {
-    return {
-      type:"",
-      showModal:false,
-      modalbody:"0",
-    };
-  },
-  methods:{
-     getSize: function () {
-      // send a GET REQUEST
-      // GET /someUrl
-      let url="http://localhost:5000/totaldata";
-      let params={
-        type: this.type,
-      };
-      console.log(params);
-      this.$http.get(url,{params: params}).then((response) => {
-          // get body data
-          console.log("OUTPUT:");
-          console.log(response.data);
-          
-          if(this.type=="Total_Data"){
-            this.modalbody=response.data[0].SUMTOTAL*1;
-          
-        }else{
-            this.modalbody=response.data[0].SUMTOTAL*2;
-        }
+    export default {
+      name: 'hello',
+      data() {
+        return {
+          type:"",
+          showModal:false,
+          modalbody:"0",
+        };
+      },
+      methods:{
+         getSize: function () {
+          // send a GET REQUEST
+          // GET /someUrl
+          let url="http://localhost:5000/totaldata";
+          let params={
+            type: this.type,
+          };
+          console.log(params);
+          this.$http.get(url,{params: params}).then((response) => {
+              // get body data
+              console.log("OUTPUT:");
+              console.log(response.data);
 
-        }).then(()=>{
-          this.showModal=true;
-        }).catch((e)=>{
-          console.log(e);})
-  }
-}}
+              if(this.type=="Total_Data"){
+                this.modalbody=response.data[0].SUMTOTAL*1;
+
+            }else{
+                this.modalbody=response.data[0].SUMTOTAL*2;
+            }
+
+            }).then(()=>{
+              this.showModal=true;
+            }).catch((e)=>{
+              console.log(e);})
+      }
+    }}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
+    h1, h2 {
+      font-weight: normal;
+    }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
 
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
+    li {
+      display: inline-block;
+      margin: 0 10px;
+    }
 
-a {
-  color: #42b983;
-}
+    a {
+      color: #42b983;
+    }
 </style>

@@ -11,7 +11,7 @@ oracledb.outFormat = oracledb.OBJECT;
 
 function respond(req, res, next) {
 
-// Get Oracle Connection only 1 connection 
+// Get Oracle Connection only 1 connection
 var connection = oracledb.getConnection(
   {
     // user          : "hv0",
@@ -25,20 +25,21 @@ var connection = oracledb.getConnection(
     let options={};
     let query='';
 
-    if (req.params.type == 'simple') {
+    if (req.query.type == 'simple') {
+      console.log(req.query.N);
+      let N=parseInt(req.query.N);
 
-      let N=parseInt(req.params.N);
-      
         query="select * from TABLE(edu_pkg1.edu_litpov_fun(:N))"
-        
+
         options={
           N: N
         }
       }
       else {
-        let fromyear=parseInt(req.params.fromyear);
-        let toyear=parseInt(req.params.toyear);
-        
+        console.log(JSON.stringify(req.query));
+        let fromyear=parseInt(req.query.fromyear);
+        let toyear=parseInt(req.query.toyear);
+
         query="select * from TABLE(edu_pkg2.edu_gap_fun(:fromyear,:toyear))"
 
         options={

@@ -15,20 +15,21 @@ import Maps2 from '@/components/Maps2';
 import modal from '@/components/ModalTemplate';
 
 
-//Vue Axios (Basically fetch)
-import axios from 'axios'
-import VueAxios from 'vue-axios'
+// Vue Axios (Basically fetch)
+import axios from 'axios';
+import VueAxios from 'vue-axios';
 
-Vue.use(VueAxios, axios)
+Vue.use(VueAxios, axios);
 
 
 // Do not forget to import raphael
-import Raphael from 'raphael/raphael'
-global.Raphael = Raphael
+import Raphael from 'raphael/raphael';
+
+global.Raphael = Raphael;
 
 
-Vue.component('activity-graph', ActivityGraph)
-Vue.component('modal', modal)
+Vue.component('activity-graph', ActivityGraph);
+Vue.component('modal', modal);
 
 
 Vue.use(Router);
@@ -90,6 +91,6 @@ export default new Router({
       path: '/maps2',
       name: 'maps2',
       component: Maps2,
-    }
+    },
   ],
 });

@@ -22,10 +22,10 @@ function respond(req, res, next) {
     let options={};
     let query='';
 
-    if (req.params.type == 'simple') {
+    if (req.query.type == 'simple') {
 
-      let _year1= parseInt(req.params.fromyear);
-        let _year2=parseInt(req.params.toyear);//employed
+      let _year1= parseInt(req.query.fromyear);
+        let _year2=parseInt(req.query.toyear);//employed
 
           query="SELECT * FROM TABLE (PACKAGEQUERY1.FQUERY1 (:fromyear,:toyear))"
         
@@ -34,12 +34,12 @@ function respond(req, res, next) {
           toyear: _year2,
         }
       }
-      else if (req.params.type =='complex')
+      else if (req.query.type =='complex')
       {
         
-        let parameter1=req.params.parameter1;
+        let parameter1=req.query.parameter1;
         
-        let parameter2=req.params.parameter2;
+        let parameter2=req.query.parameter2;
        
         
     

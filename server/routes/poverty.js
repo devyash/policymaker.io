@@ -25,12 +25,12 @@ function respond(req, res, next) {
    connection.then(function(conn) {
     let options={};
     let query='';
-    let type = req.params.type;
+    let type = req.query.type;
 
     if(type =='simple')
     {
-    let N = parseInt(req.params.N);
-    let selectrange = req.params.selectrange; 
+    let N = parseInt(req.query.N);
+    let selectrange = req.query.selectrange; 
     
     query = "select * from TABLE(povertyanalysis.poverty_employment(:top,:N,:selectrange))"
     options={
@@ -41,9 +41,9 @@ function respond(req, res, next) {
     } 
     else if(type =='complex')
     {
-    let Nc = parseInt(req.params.Nc);
-    let criteriac = req.params.criteriac; 
-    let operationc = req.params.operationc;
+    let Nc = parseInt(req.query.Nc);
+    let criteriac = req.query.criteriac; 
+    let operationc = req.query.operationc;
 
     query =  "select * from TABLE(povertyanalysis1.poverty_employmentP(:operationc,:criteriac,:Nc))"
     options = {

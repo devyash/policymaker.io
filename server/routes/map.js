@@ -24,7 +24,7 @@ function respond(req, res, next) {
 
       let options={};
       let query = '';
-      let N = parseInt(req.params.N);
+      let N = parseInt(req.query.N);
 
       if(!N){
 
